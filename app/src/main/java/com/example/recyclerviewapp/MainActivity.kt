@@ -42,15 +42,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val toolbar: androidx.appcompat.widget.Toolbar? = binding.topAppBar
-        setSupportActionBar(toolbar)
-
-        val toolbarColor = ContextCompat.getColor(this, R.color.holo_purple)
-
-        supportActionBar?.apply {
-            setBackgroundDrawable(toolbarColor.toDrawable())
-        }
-
         setupView()
 
         pessoaAdapter.submitList(pessoas)

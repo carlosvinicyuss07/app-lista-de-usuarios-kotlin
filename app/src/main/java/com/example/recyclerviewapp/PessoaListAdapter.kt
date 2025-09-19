@@ -1,5 +1,6 @@
 package com.example.recyclerviewapp
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -31,8 +32,10 @@ class PessoaListAdapter : ListAdapter<Pessoa, PessoaListAdapter.PessoaListViewHo
         RecyclerView.ViewHolder(binding.root) {
 
 
+        @SuppressLint("SetTextI18n")
         fun bind(pessoa: Pessoa) {
-            binding.tvPessoa.text = pessoa.toString()
+            binding.tvNomePessoa.text = pessoa.nome
+            binding.tvIdadePessoa.text = "${pessoa.idade} anos"
         }
     }
 
