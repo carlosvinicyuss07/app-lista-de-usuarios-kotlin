@@ -1,13 +1,12 @@
 package com.example.recyclerviewapp
 
-import android.R
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import com.example.recyclerviewapp.databinding.ActivityMainBinding
 import com.example.recyclerviewapp.model.Pessoa
-import androidx.core.graphics.drawable.toDrawable
 
 class MainActivity : AppCompatActivity() {
 
@@ -41,6 +40,7 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setSupportActionBar(binding.topAppBar)
 
         setupView()
 
@@ -49,12 +49,27 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            android.R.id.home -> { // For the navigation icon (e.g., back button)
+            android.R.id.home -> {
                 onBackPressedDispatcher.onBackPressed()
+                true
+            }
+            R.id.action_search -> {
+                // Botão "buscar"
+                Toast.makeText(this, "Buscar clicado!", Toast.LENGTH_SHORT).show()
+                true
+            }
+            R.id.action_settings -> {
+                // Botão "configurações"
+                Toast.makeText(this, "Configurações clicado!", Toast.LENGTH_SHORT).show()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.top_app_bar_menu, menu)
+        return true
     }
 
     private fun setupView() {
