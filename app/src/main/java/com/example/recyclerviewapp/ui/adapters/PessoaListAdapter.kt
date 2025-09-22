@@ -1,9 +1,8 @@
-package com.example.recyclerviewapp
+package com.example.recyclerviewapp.ui.adapters
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recyclerviewapp.databinding.ItemPessoaBinding
@@ -39,7 +38,7 @@ class PessoaListAdapter : ListAdapter<Pessoa, PessoaListAdapter.PessoaListViewHo
         }
     }
 
-    object DiffUtil : DiffUtil.ItemCallback<Pessoa>() {
+    object DiffUtil : androidx.recyclerview.widget.DiffUtil.ItemCallback<Pessoa>() {
         override fun areItemsTheSame(
             oldItem: Pessoa,
             newItem: Pessoa
