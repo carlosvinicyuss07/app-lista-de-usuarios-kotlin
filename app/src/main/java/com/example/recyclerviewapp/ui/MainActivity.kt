@@ -4,17 +4,22 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.recyclerviewapp.databinding.ActivityMainBinding
-import com.example.recyclerviewapp.model.Usuario
+import com.example.recyclerviewapp.viewmodel.UsuarioViewModelFactory
 import com.example.recyclerviewapp.network.RetrofitClient
+import com.example.recyclerviewapp.repository.UsuarioRepository
 import com.example.recyclerviewapp.ui.adapters.UsuarioAdapter
-import retrofit2.Call
-import retrofit2.Response
+import com.example.recyclerviewapp.viewmodel.UsuarioViewModel
 
 class MainActivity : AppCompatActivity() {
 
     private val usuarioAdapter: UsuarioAdapter = UsuarioAdapter()
+    private val viewModel: UsuarioViewModel by viewModels {
+        val repository = UsuarioRepository(RetrofitClient.instance)
+        UsuarioViewModelFactory(repository)
+    }
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,22 +31,16 @@ class MainActivity : AppCompatActivity() {
 
         setupView()
 
-        RetrofitClient.instance.getUsuarios().enqueue(object  : retrofit2.Callback<List<Usuario>> {
-            override fun onResponse(call: Call<List<Usuario>?>, response: Response<List<Usuario>?>) {
-                if (response.isSuccessful) {
-                    val usuarios = response.body() ?: emptyList()
-                    usuarioAdapter.submitList(usuarios)
-                } else {
-                    val codigo = response.code()
-                    val erroBody = response.errorBody()?.string()
-                }
-            }
+        viewModel.usuarios.observe(this) { lista ->
+            usuarioAdapter.submitList(lista)
+        }
 
-            override fun onFailure(call: Call<List<Usuario>?>, t: Throwable) {
-                Toast.makeText(this@MainActivity, "Erro: ${t.message}", Toast.LENGTH_SHORT).show()
-            }
+        viewModel.erro.observe(this) { mensagem ->
+            Toast.makeText(this, mensagem, Toast.LENGTH_SHORT).show()
+        }
 
-        })
+        viewModel.carregarUsuarios()
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
