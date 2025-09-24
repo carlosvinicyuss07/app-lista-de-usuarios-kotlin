@@ -11,19 +11,13 @@ import com.example.recyclerviewapp.model.Usuario
 class UsuarioAdapter : ListAdapter<Usuario, UsuarioAdapter.UsuarioViewHolder>(
     DiffUtil
 ) {
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): UsuarioViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UsuarioViewHolder {
         val binding = ItemUsuarioBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
         return UsuarioViewHolder(binding)
     }
 
-    override fun onBindViewHolder(
-        holder: UsuarioViewHolder,
-        position: Int
-    ) {
+    override fun onBindViewHolder(holder: UsuarioViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
@@ -40,17 +34,11 @@ class UsuarioAdapter : ListAdapter<Usuario, UsuarioAdapter.UsuarioViewHolder>(
     }
 
     object DiffUtil : androidx.recyclerview.widget.DiffUtil.ItemCallback<Usuario>() {
-        override fun areItemsTheSame(
-            oldItem: Usuario,
-            newItem: Usuario
-        ): Boolean {
+        override fun areItemsTheSame(oldItem: Usuario, newItem: Usuario): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(
-            oldItem: Usuario,
-            newItem: Usuario
-        ): Boolean {
+        override fun areContentsTheSame(oldItem: Usuario, newItem: Usuario): Boolean {
             return oldItem == newItem
         }
     }
