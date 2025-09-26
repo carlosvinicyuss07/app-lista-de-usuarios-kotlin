@@ -13,7 +13,7 @@ class UsuarioViewModel(private val repository: UsuarioRepository) : ViewModel() 
     private val _usuarios = MutableLiveData<List<Usuario>>()
     val usuarios: LiveData<List<Usuario>> = _usuarios
 
-    private val _erro = MutableLiveData<String>()
+    private val _erro = SingleLiveEvent<String>()
     val erro: LiveData<String> = _erro
 
     fun carregarUsuarios() {
