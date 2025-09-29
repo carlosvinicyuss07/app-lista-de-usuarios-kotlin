@@ -1,5 +1,6 @@
 package com.example.recyclerviewapp.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -30,6 +31,12 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.topAppBar)
 
         setupView()
+
+        binding.btnOpenDetails.setOnClickListener {
+            val intent = Intent(this, DetailsActivity::class.java)
+            intent.putExtra("USER_ID", 123)
+            startActivity(intent)
+        }
 
         viewModel.usuarios.observe(this) { lista ->
             usuarioAdapter.submitList(lista)
