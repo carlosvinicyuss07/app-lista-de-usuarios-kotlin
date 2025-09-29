@@ -16,7 +16,11 @@ import com.example.recyclerviewapp.viewmodel.UsuarioViewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private val usuarioAdapter: UsuarioAdapter = UsuarioAdapter()
+    private val usuarioAdapter: UsuarioAdapter = UsuarioAdapter { usuario ->
+        val intent = Intent(this, DetailsActivity::class.java)
+        intent.putExtra("USER_ID", usuario.id)
+        startActivity(intent)
+    }
     private val viewModel: UsuarioViewModel by viewModels {
         val repository = UsuarioRepository(RetrofitClient.instance)
         UsuarioViewModelFactory(repository)
@@ -31,12 +35,6 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.topAppBar)
 
         setupView()
-
-        binding.btnOpenDetails.setOnClickListener {
-            val intent = Intent(this, DetailsActivity::class.java)
-            intent.putExtra("USER_ID", 123)
-            startActivity(intent)
-        }
 
         viewModel.usuarios.observe(this) { lista ->
             usuarioAdapter.submitList(lista)

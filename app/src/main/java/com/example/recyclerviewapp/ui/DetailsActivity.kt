@@ -24,7 +24,7 @@ class DetailsActivity : AppCompatActivity() {
         setSupportActionBar(binding.topAppBar)
         val userId = intent.getIntExtra("USER_ID", -1)
 
-        binding.tvDetails.text = "Bem-vindo à tela de detalhes do usuário $userId"
+        binding.tvDetails.text = "Detalhes do usuário ID: $userId"
 
         binding.btnVoltar.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)

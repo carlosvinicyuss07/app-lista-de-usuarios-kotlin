@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.recyclerviewapp.databinding.ItemUsuarioBinding
 import com.example.recyclerviewapp.model.Usuario
 
-class UsuarioAdapter : ListAdapter<Usuario, UsuarioAdapter.UsuarioViewHolder>(
+class UsuarioAdapter(
+    private val onItemClick: (Usuario) -> Unit
+) : ListAdapter<Usuario, UsuarioAdapter.UsuarioViewHolder>(
     DiffUtil
 ) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UsuarioViewHolder {
@@ -21,15 +23,18 @@ class UsuarioAdapter : ListAdapter<Usuario, UsuarioAdapter.UsuarioViewHolder>(
         holder.bind(getItem(position))
     }
 
-    class UsuarioViewHolder(private val binding: ItemUsuarioBinding) :
+    inner class UsuarioViewHolder(private val binding: ItemUsuarioBinding) :
         RecyclerView.ViewHolder(binding.root) {
-
 
         @SuppressLint("SetTextI18n")
         fun bind(usuario: Usuario) {
             binding.tvName.text = usuario.name
             binding.tvUsername.text = "Username: ${usuario.username}"
             binding.tvEmail.text = "Email: ${usuario.email}"
+
+            binding.root.setOnClickListener {
+                onItemClick(usuario)
+            }
         }
     }
 

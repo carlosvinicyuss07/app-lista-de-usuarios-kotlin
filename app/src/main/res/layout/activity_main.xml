@@ -20,12 +20,6 @@
                 app:menu="@menu/top_app_bar_menu" />
         </com.google.android.material.appbar.AppBarLayout>
 
-        <Button
-            android:id="@+id/btnOpenDetails"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Abrir Detalhes" />
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/lista_pessoas"
             android:layout_width="match_parent"
