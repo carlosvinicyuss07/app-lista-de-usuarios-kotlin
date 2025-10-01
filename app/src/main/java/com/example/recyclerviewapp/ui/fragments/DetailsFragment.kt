@@ -69,6 +69,10 @@ class DetailsFragment : Fragment() {
                         usuario.company.bs
         }
 
+        viewModel.loading.observe(viewLifecycleOwner) { loading ->
+            binding.progressBar.visibility = if (loading) View.VISIBLE else View.GONE
+        }
+
         binding.btnVoltar.setOnClickListener {
             parentFragmentManager.popBackStack() // Faz o retorno para a lista
         }
