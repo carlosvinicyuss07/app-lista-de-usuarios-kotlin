@@ -1,26 +1,21 @@
-package com.example.recyclerviewapp.ui
+package com.example.recyclerviewapp.ui.activities
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.example.recyclerviewapp.R
 import com.example.recyclerviewapp.databinding.ActivityMainBinding
-import com.example.recyclerviewapp.viewmodel.UsuarioViewModelFactory
 import com.example.recyclerviewapp.network.RetrofitClient
 import com.example.recyclerviewapp.repository.UsuarioRepository
-import com.example.recyclerviewapp.ui.adapters.UsuarioAdapter
+import com.example.recyclerviewapp.ui.fragments.HomeFragment
 import com.example.recyclerviewapp.viewmodel.UsuarioViewModel
+import com.example.recyclerviewapp.viewmodel.UsuarioViewModelFactory
 
 class MainActivity : AppCompatActivity() {
 
-    private val usuarioAdapter: UsuarioAdapter = UsuarioAdapter { usuario ->
-        val intent = Intent(this, DetailsActivity::class.java)
-        intent.putExtra("USER_ID", usuario.id)
-        startActivity(intent)
-    }
     private val viewModel: UsuarioViewModel by viewModels {
         val repository = UsuarioRepository(RetrofitClient.instance)
         UsuarioViewModelFactory(repository)
@@ -34,26 +29,24 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.topAppBar)
 
-        setupView()
-
-        viewModel.usuarios.observe(this) { lista ->
-            usuarioAdapter.submitList(lista)
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, HomeFragment())
+                .commit()
         }
 
-        viewModel.erro.observe(this) { mensagem ->
-            Toast.makeText(this, mensagem, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        if (supportFragmentManager.backStackEntryCount > 0) {
+            supportFragmentManager.popBackStack()
+            return true
         }
-
-        viewModel.carregarUsuarios()
-
+        return super.onSupportNavigateUp()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            android.R.id.home -> {
-                onBackPressedDispatcher.onBackPressed()
-                true
-            }
             com.example.recyclerviewapp.R.id.action_search -> {
                 // Botão "buscar"
                 Toast.makeText(this, "Buscar clicado!", Toast.LENGTH_SHORT).show()
@@ -71,9 +64,5 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(com.example.recyclerviewapp.R.menu.top_app_bar_menu, menu)
         return true
-    }
-
-    private fun setupView() {
-        binding.listaPessoas.adapter = usuarioAdapter
     }
 }

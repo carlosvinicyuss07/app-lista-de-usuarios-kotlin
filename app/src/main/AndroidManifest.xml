@@ -12,10 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RecyclerViewApp">
         <activity
-            android:name=".ui.DetailsActivity"
+            android:name=".ui.activities.DetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
