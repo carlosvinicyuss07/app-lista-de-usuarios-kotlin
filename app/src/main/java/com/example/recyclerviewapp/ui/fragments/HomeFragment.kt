@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.recyclerviewapp.R
 import com.example.recyclerviewapp.databinding.FragmentHomeBinding
@@ -38,13 +39,11 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        usuarioAdapter = UsuarioAdapter(onItemClick = { usuario ->
-            val detailsFragment = DetailsFragment.newInstance(usuario.id)
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainer, detailsFragment)
-                .addToBackStack(null)
-                .commit()
-        })
+        usuarioAdapter = UsuarioAdapter { usuario ->
+            val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(usuario.id)
+            findNavController().navigate(action)
+        }
+        binding.listaPessoas.adapter = usuarioAdapter
 
         binding.listaPessoas.apply {
             layoutManager = LinearLayoutManager(requireContext())

@@ -14,7 +14,8 @@ import com.example.recyclerviewapp.viewmodel.DetailsViewModel
 import com.example.recyclerviewapp.viewmodel.DetailsViewModelFactory
 import kotlin.getValue
 
-class DetailsFragment : Fragment() {
+class
+DetailsFragment : Fragment() {
 
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
