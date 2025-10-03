@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.recyclerviewapp.databinding.FragmentDetailsBinding
 import com.example.recyclerviewapp.network.RetrofitClient
 import com.example.recyclerviewapp.repository.UsuarioRepository
@@ -14,8 +16,7 @@ import com.example.recyclerviewapp.viewmodel.DetailsViewModel
 import com.example.recyclerviewapp.viewmodel.DetailsViewModelFactory
 import kotlin.getValue
 
-class
-DetailsFragment : Fragment() {
+class DetailsFragment : Fragment() {
 
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
@@ -24,14 +25,7 @@ DetailsFragment : Fragment() {
         DetailsViewModelFactory(UsuarioRepository(RetrofitClient.instance))
     }
 
-    private var userId: Int = -1
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            userId = it.getInt(ARG_USER_ID, -1)
-        }
-    }
+    private val args: DetailsFragmentArgs by navArgs() // Safe Args configurado
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,49 +40,40 @@ DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (userId != -1) {
-            viewModel.carregarUsuario(userId)
-        }
+        val userId = args.userId
+        viewModel.carregarUsuario(userId)
 
         viewModel.usuario.observe(viewLifecycleOwner) { usuario ->
-            binding.txtNome.text = usuario.name
-            binding.txtUsername.text = usuario.username
-            binding.txtEmail.text = usuario.email
-            binding.txtTelefone.text = usuario.phone
-            binding.txtWebsite.text = usuario.website
+            usuario?.let {
+                binding.txtNome.text = usuario.name
+                binding.txtUsername.text = usuario.username
+                binding.txtEmail.text = usuario.email
+                binding.txtTelefone.text = usuario.phone
+                binding.txtWebsite.text = usuario.website
 
-            binding.txtEndereco.text =
-                "${usuario.address.street}, ${usuario.address.suite}\n" +
-                        "${usuario.address.city} - CEP: ${usuario.address.zipcode}"
+                binding.txtEndereco.text =
+                    "${usuario.address.street}, ${usuario.address.suite}\n" +
+                            "${usuario.address.city} - CEP: ${usuario.address.zipcode}"
 
-            binding.txtGeo.text =
-                "Lat: ${usuario.address.geo.lat}, Lng: ${usuario.address.geo.lng}"
+                binding.txtGeo.text =
+                    "Lat: ${usuario.address.geo.lat}, Lng: ${usuario.address.geo.lng}"
 
-            binding.txtEmpresa.text =
-                "${usuario.company.name}\n" +
-                        "${usuario.company.catchPhrase}\n" +
-                        usuario.company.bs
+                binding.txtEmpresa.text =
+                    "${usuario.company.name}\n" +
+                            "${usuario.company.catchPhrase}\n" +
+                            usuario.company.bs
+            }
         }
 
         viewModel.loading.observe(viewLifecycleOwner) { loading ->
             binding.progressBar.visibility = if (loading) View.VISIBLE else View.GONE
         }
 
-        binding.btnVoltar.setOnClickListener {
-            parentFragmentManager.popBackStack() // Faz o retorno para a lista
-        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        private const val ARG_USER_ID = "USER_ID"
-        fun newInstance(userId: Int) = DetailsFragment().apply {
-            arguments = Bundle().apply { putInt(ARG_USER_ID, userId) }
-        }
     }
 
 }
