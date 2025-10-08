@@ -5,11 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.recyclerviewapp.model.Usuario
-import com.example.recyclerviewapp.network.ApiService
-import com.example.recyclerviewapp.repository.UsuarioRepository
+import com.example.recyclerviewapp.repository.UsuarioRepositoryInterface
 import kotlinx.coroutines.launch
 
-class UsuarioViewModel(private val repository: UsuarioRepository) : ViewModel() {
+class UsuarioViewModel(private val repository: UsuarioRepositoryInterface) : ViewModel() {
 
     private val _usuarios = MutableLiveData<List<Usuario>>()
     val usuarios: LiveData<List<Usuario>> = _usuarios

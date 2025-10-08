@@ -6,14 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.recyclerviewapp.databinding.FragmentDetailsBinding
-import com.example.recyclerviewapp.network.RetrofitClient
-import com.example.recyclerviewapp.repository.UsuarioRepository
 import com.example.recyclerviewapp.viewmodel.DetailsViewModel
-import com.example.recyclerviewapp.viewmodel.DetailsViewModelFactory
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.getValue
 
 class DetailsFragment : Fragment() {
@@ -21,9 +17,7 @@ class DetailsFragment : Fragment() {
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: DetailsViewModel by viewModels {
-        DetailsViewModelFactory(UsuarioRepository(RetrofitClient.instance))
-    }
+    private val viewModel: DetailsViewModel by viewModel()
 
     private val args: DetailsFragmentArgs by navArgs() // Safe Args configurado
 
