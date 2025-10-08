@@ -44,6 +44,14 @@ class HomeFragment : Fragment() {
             adapter = usuarioAdapter
         }
 
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            viewModel.carregarUsuarios(forceReload = true)
+        }
+
+        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            binding.swipeRefreshLayout.isRefreshing = isLoading
+        }
+
         viewModel.usuarios.observe(viewLifecycleOwner) { lista ->
             usuarioAdapter.submitList(lista)
         }
