@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.recyclerviewapp.model.Usuario
+import com.example.recyclerviewapp.network.ApiService
 import com.example.recyclerviewapp.repository.UsuarioRepository
 import kotlinx.coroutines.launch
 

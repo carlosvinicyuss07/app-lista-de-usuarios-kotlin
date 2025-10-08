@@ -13,16 +13,14 @@ import com.example.recyclerviewapp.network.RetrofitClient
 import com.example.recyclerviewapp.repository.UsuarioRepository
 import com.example.recyclerviewapp.ui.adapters.UsuarioAdapter
 import com.example.recyclerviewapp.viewmodel.UsuarioViewModel
-import com.example.recyclerviewapp.viewmodel.UsuarioViewModelFactory
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: UsuarioViewModel by viewModels {
-        UsuarioViewModelFactory(UsuarioRepository(RetrofitClient.instance))
-    }
+    private val viewModel: UsuarioViewModel by viewModel()
 
     private lateinit var usuarioAdapter: UsuarioAdapter
 
