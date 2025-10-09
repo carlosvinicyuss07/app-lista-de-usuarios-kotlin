@@ -1,7 +1,7 @@
-package com.example.recyclerviewapp.network
+package com.example.recyclerviewapp.data.network
 
-import com.example.recyclerviewapp.model.Usuario
-import com.example.recyclerviewapp.model.UsuarioDetails
+import com.example.recyclerviewapp.domain.Usuario
+import com.example.recyclerviewapp.domain.UsuarioDetails
 import retrofit2.http.GET
 import retrofit2.http.Path
 

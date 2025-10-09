@@ -1,8 +1,8 @@
 package com.example.recyclerviewapp.di
 
-import com.example.recyclerviewapp.network.RetrofitClient
-import com.example.recyclerviewapp.repository.UsuarioRepository
-import com.example.recyclerviewapp.repository.UsuarioRepositoryInterface
+import com.example.recyclerviewapp.data.network.RetrofitClient
+import com.example.recyclerviewapp.data.UsuarioRepository
+import com.example.recyclerviewapp.domain.UsuarioRepositoryInterface
 import com.example.recyclerviewapp.viewmodel.DetailsViewModel
 import com.example.recyclerviewapp.viewmodel.UsuarioViewModel
 import org.koin.core.module.dsl.viewModel

@@ -1,4 +1,4 @@
-package com.example.recyclerviewapp.network
+package com.example.recyclerviewapp.data.network
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

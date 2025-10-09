@@ -1,8 +1,9 @@
-package com.example.recyclerviewapp.repository
+package com.example.recyclerviewapp.data
 
-import com.example.recyclerviewapp.model.Usuario
-import com.example.recyclerviewapp.model.UsuarioDetails
-import com.example.recyclerviewapp.network.ApiService
+import com.example.recyclerviewapp.domain.Usuario
+import com.example.recyclerviewapp.domain.UsuarioDetails
+import com.example.recyclerviewapp.data.network.ApiService
+import com.example.recyclerviewapp.domain.UsuarioRepositoryInterface
 
 class UsuarioRepository(private val api: ApiService) : UsuarioRepositoryInterface {
 

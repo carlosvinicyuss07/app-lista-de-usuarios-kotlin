@@ -1,4 +1,4 @@
-package com.example.recyclerviewapp.model
+package com.example.recyclerviewapp.domain
 
 data class Usuario(
     val id: Int,

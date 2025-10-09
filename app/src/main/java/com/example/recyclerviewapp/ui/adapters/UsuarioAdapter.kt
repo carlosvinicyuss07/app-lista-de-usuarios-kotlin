@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recyclerviewapp.databinding.ItemUsuarioBinding
-import com.example.recyclerviewapp.model.Usuario
+import com.example.recyclerviewapp.domain.Usuario
 
 class UsuarioAdapter(
     private val onItemClick: (Usuario) -> Unit

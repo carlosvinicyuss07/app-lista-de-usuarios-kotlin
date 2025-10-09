@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.recyclerviewapp.model.UsuarioDetails
-import com.example.recyclerviewapp.repository.UsuarioRepositoryInterface
+import com.example.recyclerviewapp.domain.UsuarioDetails
+import com.example.recyclerviewapp.domain.UsuarioRepositoryInterface
 import kotlinx.coroutines.launch
 
 class DetailsViewModel(private val repository: UsuarioRepositoryInterface) : ViewModel() {

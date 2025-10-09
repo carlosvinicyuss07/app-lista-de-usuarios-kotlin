@@ -1,7 +1,4 @@
-package com.example.recyclerviewapp.repository
-
-import com.example.recyclerviewapp.model.Usuario
-import com.example.recyclerviewapp.model.UsuarioDetails
+package com.example.recyclerviewapp.domain
 
 interface UsuarioRepositoryInterface {
 
