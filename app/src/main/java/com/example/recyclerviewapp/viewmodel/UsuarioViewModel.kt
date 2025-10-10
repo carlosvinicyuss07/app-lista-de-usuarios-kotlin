@@ -4,14 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.recyclerviewapp.domain.Usuario
 import com.example.recyclerviewapp.domain.UsuarioRepositoryInterface
+import com.example.recyclerviewapp.domain.toUi
+import com.example.recyclerviewapp.ui.UsuarioUi
 import kotlinx.coroutines.launch
 
 class UsuarioViewModel(private val repository: UsuarioRepositoryInterface) : ViewModel() {
 
-    private val _usuarios = MutableLiveData<List<Usuario>>()
-    val usuarios: LiveData<List<Usuario>> = _usuarios
+    private val _usuarios = MutableLiveData<List<UsuarioUi>>()
+    val usuarios: LiveData<List<UsuarioUi>> = _usuarios
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -29,7 +30,9 @@ class UsuarioViewModel(private val repository: UsuarioRepositoryInterface) : Vie
                 }
 
                 val lista = repository.fetchUsers()
-                _usuarios.value = lista
+                _usuarios.value = lista.map { usuario ->
+                    usuario.toUi()
+                }
 
             } catch (e: Exception) {
                 _erro.value = "Falha: ${e.message}"

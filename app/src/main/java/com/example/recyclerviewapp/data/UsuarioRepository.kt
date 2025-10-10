@@ -13,17 +13,21 @@ class UsuarioRepository(private val api: ApiService) : UsuarioRepositoryInterfac
         if (cachedUsuarios != null) {
             return cachedUsuarios!!
         }
-        val usuarios = api.getUsuarios()
+        val usuarios = api.getUsuarios().map { usuarioResource ->
+            usuarioResource.toDomain()
+        }
         cachedUsuarios = usuarios
         return usuarios
     }
 
     override suspend fun fecthUserById(id: Int): UsuarioDetails {
-        return api.getUsuarioPorId(id)
+        return api.getUsuarioPorId(id).toDomain()
     }
 
     override suspend fun refreshUsuarios() {
-        val usuarios = api.getUsuarios()
+        val usuarios = api.getUsuarios().map { usuarioResource ->
+            usuarioResource.toDomain()
+        }
         cachedUsuarios = usuarios
     }
 }

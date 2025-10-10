@@ -6,11 +6,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recyclerviewapp.databinding.ItemUsuarioBinding
-import com.example.recyclerviewapp.domain.Usuario
+import com.example.recyclerviewapp.ui.UsuarioUi
 
 class UsuarioAdapter(
-    private val onItemClick: (Usuario) -> Unit
-) : ListAdapter<Usuario, UsuarioAdapter.UsuarioViewHolder>(
+    private val onItemClick: (UsuarioUi) -> Unit
+) : ListAdapter<UsuarioUi, UsuarioAdapter.UsuarioViewHolder>(
     DiffUtil
 ) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UsuarioViewHolder {
@@ -27,10 +27,10 @@ class UsuarioAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         @SuppressLint("SetTextI18n")
-        fun bind(usuario: Usuario) {
+        fun bind(usuario: UsuarioUi) {
             binding.tvName.text = usuario.name
             binding.tvUsername.text = "Username: ${usuario.username}"
-            binding.tvEmail.text = "Email: ${usuario.email}"
+            binding.tvEmail.text = "Email: ${usuario.emailVisivel}"
 
             binding.root.setOnClickListener {
                 onItemClick(usuario)
@@ -38,12 +38,12 @@ class UsuarioAdapter(
         }
     }
 
-    object DiffUtil : androidx.recyclerview.widget.DiffUtil.ItemCallback<Usuario>() {
-        override fun areItemsTheSame(oldItem: Usuario, newItem: Usuario): Boolean {
+    object DiffUtil : androidx.recyclerview.widget.DiffUtil.ItemCallback<UsuarioUi>() {
+        override fun areItemsTheSame(oldItem: UsuarioUi, newItem: UsuarioUi): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Usuario, newItem: Usuario): Boolean {
+        override fun areContentsTheSame(oldItem: UsuarioUi, newItem: UsuarioUi): Boolean {
             return oldItem == newItem
         }
     }

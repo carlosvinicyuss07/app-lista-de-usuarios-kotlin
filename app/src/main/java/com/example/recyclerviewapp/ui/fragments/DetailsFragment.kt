@@ -39,23 +39,14 @@ class DetailsFragment : Fragment() {
 
         viewModel.usuario.observe(viewLifecycleOwner) { usuario ->
             usuario?.let {
-                binding.txtNome.text = usuario.name
+                binding.txtName.text = usuario.name
                 binding.txtUsername.text = usuario.username
-                binding.txtEmail.text = usuario.email
-                binding.txtTelefone.text = usuario.phone
-                binding.txtWebsite.text = usuario.website
+                binding.txtContact.text = usuario.formatedContact
+                binding.txtWebsite.text = usuario.websiteLabel
 
-                binding.txtEndereco.text =
-                    "${usuario.address.street}, ${usuario.address.suite}\n" +
-                            "${usuario.address.city} - CEP: ${usuario.address.zipcode}"
-
-                binding.txtGeo.text =
-                    "Lat: ${usuario.address.geo.lat}, Lng: ${usuario.address.geo.lng}"
-
-                binding.txtEmpresa.text =
-                    "${usuario.company.name}\n" +
-                            "${usuario.company.catchPhrase}\n" +
-                            usuario.company.bs
+                binding.txtAddress.text = usuario.formatedAddress
+                binding.txtGeo.text = usuario.formatedGeo
+                binding.txtCompany.text = usuario.formatedCompany
             }
         }
 
