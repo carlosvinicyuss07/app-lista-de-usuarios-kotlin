@@ -7,7 +7,5 @@ import com.example.recyclerviewapp.data.local.entities.UsuarioEntity
 
 @Database(entities = [UsuarioEntity::class], version = 1)
 abstract class ListaDeUsuariosDatabase : RoomDatabase() {
-
     abstract fun usuarioDao(): UsuarioDao
-
 }

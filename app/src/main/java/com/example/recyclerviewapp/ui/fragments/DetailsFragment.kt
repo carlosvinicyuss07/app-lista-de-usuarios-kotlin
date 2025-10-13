@@ -54,11 +54,6 @@ class DetailsFragment : Fragment() {
             }
         }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.loading.collect { loading ->
-                binding.progressBar.visibility = if (loading) View.VISIBLE else View.GONE
-            }
-        }
     }
 
     override fun onDestroyView() {

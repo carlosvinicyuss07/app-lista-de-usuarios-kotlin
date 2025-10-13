@@ -46,16 +46,6 @@ class HomeFragment : Fragment() {
             adapter = usuarioAdapter
         }
 
-        binding.swipeRefreshLayout.setOnRefreshListener {
-            viewModel.carregarUsuarios(forceReload = true)
-        }
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.isLoading.collect { isLoading ->
-                binding.swipeRefreshLayout.isRefreshing = isLoading
-            }
-        }
-
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.usuarios.collect { lista ->
                 usuarioAdapter.submitList(lista)
@@ -63,7 +53,7 @@ class HomeFragment : Fragment() {
         }
 
         if (viewModel.usuarios.value.isEmpty()) {
-            viewModel.carregarUsuarios()
+            viewModel.atualizarUsuariosRemotos()
         }
     }
 

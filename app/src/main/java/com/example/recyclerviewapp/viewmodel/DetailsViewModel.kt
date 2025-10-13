@@ -1,7 +1,5 @@
 package com.example.recyclerviewapp.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.recyclerviewapp.domain.UsuarioRepositoryInterface
@@ -13,7 +11,9 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class DetailsViewModel(private val repository: UsuarioRepositoryInterface) : ViewModel() {
+class DetailsViewModel(
+    private val repository: UsuarioRepositoryInterface
+) : ViewModel() {
 
     private val _usuario = MutableStateFlow<UsuarioDetailsUi?>(null)
     val usuario: StateFlow<UsuarioDetailsUi?> get() = _usuario
@@ -28,8 +28,10 @@ class DetailsViewModel(private val repository: UsuarioRepositoryInterface) : Vie
         viewModelScope.launch {
             _loading.value = true
             try {
-                val usuarioDetalhado = repository.fecthUserById(id).toUi()
-                _usuario.value = usuarioDetalhado
+                repository.refreshUsuariosById(id)
+                repository.fecthUserById(id).collect { user ->
+                    _usuario.value = user?.toUi()
+                }
             } catch (e: Exception) {
                 _erro.emit("Falha ao carregar usuário: ${e.message}")
             } finally {
