@@ -7,18 +7,22 @@ import androidx.lifecycle.viewModelScope
 import com.example.recyclerviewapp.domain.UsuarioRepositoryInterface
 import com.example.recyclerviewapp.domain.toUi
 import com.example.recyclerviewapp.ui.UsuarioUi
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class UsuarioViewModel(private val repository: UsuarioRepositoryInterface) : ViewModel() {
 
-    private val _usuarios = MutableLiveData<List<UsuarioUi>>()
-    val usuarios: LiveData<List<UsuarioUi>> = _usuarios
+    private val _usuarios = MutableStateFlow<List<UsuarioUi>>(emptyList())
+    val usuarios: StateFlow<List<UsuarioUi>> = _usuarios
 
-    private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading: LiveData<Boolean> = _isLoading
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading
 
-    private val _erro = SingleLiveEvent<String>()
-    val erro: LiveData<String> = _erro
+    private val _erro = MutableSharedFlow<String>()
+    val erro: SharedFlow<String> = _erro
 
     fun carregarUsuarios(forceReload: Boolean = false) {
         viewModelScope.launch {
@@ -35,7 +39,7 @@ class UsuarioViewModel(private val repository: UsuarioRepositoryInterface) : Vie
                 }
 
             } catch (e: Exception) {
-                _erro.value = "Falha: ${e.message}"
+                _erro.emit("Falha ao carregar usuários: ${e.message}")
             } finally {
                 _isLoading.value = false
             }

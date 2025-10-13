@@ -1,11 +1,14 @@
 package com.example.recyclerviewapp.data
 
+import com.example.recyclerviewapp.data.local.dao.UsuarioDao
 import com.example.recyclerviewapp.domain.Usuario
 import com.example.recyclerviewapp.domain.UsuarioDetails
 import com.example.recyclerviewapp.data.network.ApiService
 import com.example.recyclerviewapp.domain.UsuarioRepositoryInterface
 
-class UsuarioRepository(private val api: ApiService) : UsuarioRepositoryInterface {
+class UsuarioRepository(
+    private val api: ApiService
+) : UsuarioRepositoryInterface {
 
     private var cachedUsuarios: List<Usuario>? = null
 

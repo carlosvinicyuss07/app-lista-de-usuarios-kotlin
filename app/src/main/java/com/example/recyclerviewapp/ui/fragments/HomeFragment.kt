@@ -5,11 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.recyclerviewapp.databinding.FragmentHomeBinding
 import com.example.recyclerviewapp.ui.adapters.UsuarioAdapter
 import com.example.recyclerviewapp.viewmodel.UsuarioViewModel
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment() {
@@ -48,15 +50,19 @@ class HomeFragment : Fragment() {
             viewModel.carregarUsuarios(forceReload = true)
         }
 
-        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
-            binding.swipeRefreshLayout.isRefreshing = isLoading
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.isLoading.collect { isLoading ->
+                binding.swipeRefreshLayout.isRefreshing = isLoading
+            }
         }
 
-        viewModel.usuarios.observe(viewLifecycleOwner) { lista ->
-            usuarioAdapter.submitList(lista)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.usuarios.collect { lista ->
+                usuarioAdapter.submitList(lista)
+            }
         }
 
-        if (viewModel.usuarios.value.isNullOrEmpty()) {
+        if (viewModel.usuarios.value.isEmpty()) {
             viewModel.carregarUsuarios()
         }
     }
