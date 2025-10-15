@@ -35,8 +35,6 @@ class DetailsViewModel(
                 }
             } catch (e: Exception) {
                 _erro.emit("Falha ao carregar usuário: ${e.message}")
-            } finally {
-                _loading.value = false
             }
         }
     }

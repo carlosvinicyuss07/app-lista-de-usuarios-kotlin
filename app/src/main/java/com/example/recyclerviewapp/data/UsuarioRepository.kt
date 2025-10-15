@@ -18,8 +18,6 @@ class UsuarioRepository(
     private val usuarioDao: UsuarioDao
 ) : UsuarioRepositoryInterface {
 
-    private var cachedUsuarios: List<Usuario>? = null
-
     override suspend fun fetchUsers(): Flow<List<Usuario>> {
 
         return usuarioDao.findAll().map { entities ->
