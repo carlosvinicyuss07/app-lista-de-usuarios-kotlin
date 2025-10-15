@@ -31,6 +31,7 @@ class DetailsViewModel(
                 repository.refreshUsuariosById(id)
                 repository.fecthUserById(id).collect { user ->
                     _usuario.value = user?.toUi()
+                    _loading.value = false
                 }
             } catch (e: Exception) {
                 _erro.emit("Falha ao carregar usuário: ${e.message}")

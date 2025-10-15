@@ -46,6 +46,16 @@ class HomeFragment : Fragment() {
             adapter = usuarioAdapter
         }
 
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            viewModel.atualizarUsuariosRemotos(forceReload = true)
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.isLoading.collect { loading ->
+                binding.swipeRefreshLayout.isRefreshing = loading
+            }
+        }
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.usuarios.collect { lista ->
                 usuarioAdapter.submitList(lista)

@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class UsuarioViewModel(
@@ -30,12 +31,13 @@ class UsuarioViewModel(
             try {
                 repository.refreshUsuarios()
                 repository.fetchUsers().collect { lista ->
-                    _usuarios.value = lista.map { it.toUi() }
+                    _usuarios.value = lista.map { usuario ->
+                        usuario.toUi()
+                    }
+                    _isLoading.value = false // encerra loading após a primeira emissão
                 }
             } catch (e: Exception) {
                 _erro.emit("Falha ao carregar usuários: ${e.message}")
-            } finally {
-                _isLoading.value = false
             }
         }
     }
