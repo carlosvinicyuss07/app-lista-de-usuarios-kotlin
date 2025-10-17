@@ -56,14 +56,44 @@ val MIGRATION_2_3 = object : Migration(2, 3) {
             )
         """)
 
-        db.execSQL("""
-            INSERT INTO usuarios_new (
-                localId, idApi, name, username, email, phone, website, company, origemLocal
-            )
-            SELECT 
-                localId, idApi, name, username, email, phone, website, company, origemLocal
-            FROM usuarios
-        """)
+        db.execSQL(
+            """
+                INSERT INTO usuarios_new (
+                    localId,
+                    idApi,
+                    name,
+                    username,
+                    email,
+                    street,
+                    suite,
+                    city,
+                    zipcode,
+                    lat,
+                    lng,
+                    phone,
+                    website,
+                    company,
+                    origemLocal
+                )
+                SELECT
+                    localId,
+                    idApi,
+                    name,
+                    username,
+                    email,
+                    '',  -- street vazio
+                    '',  -- suite vazio
+                    '',  -- city vazio
+                    '',  -- zipcode vazio
+                    '',  -- lat vazio
+                    '',  -- lng vazio
+                    COALESCE(phone, ''),
+                    COALESCE(website, ''),
+                    COALESCE(company, ''),
+                    COALESCE(origemLocal, 0)
+                FROM usuarios
+            """
+        )
 
         db.execSQL("DROP TABLE usuarios")
 

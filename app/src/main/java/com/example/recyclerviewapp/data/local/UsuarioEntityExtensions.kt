@@ -17,7 +17,7 @@ fun UsuarioEntity.toDetailsDomain() = UsuarioDetails(
     email = email,
     phone = phone,
     website = website,
-    address = "$street, $suite/n" +
+    address = "$street, $suite\n" +
             "$city - CEP: $zipcode",
     geo = "lat: $lat | lng: $lng",
     company = company,
