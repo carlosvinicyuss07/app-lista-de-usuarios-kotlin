@@ -5,10 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
+import com.example.recyclerviewapp.R
 import com.example.recyclerviewapp.databinding.FragmentDetailsBinding
+import com.example.recyclerviewapp.ui.activities.MainActivity
 import com.example.recyclerviewapp.viewmodel.DetailsViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel

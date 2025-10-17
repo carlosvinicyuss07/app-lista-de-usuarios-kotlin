@@ -5,7 +5,7 @@ import retrofit2.http.Path
 
 interface ApiService {
     @GET("users") // endpoint
-    suspend fun getUsuarios(): List<UsuarioResource>
+    suspend fun getUsuarios(): List<UsuarioDetailsResource>
 
     @GET("users/{id}")
     suspend fun getUsuarioPorId(@Path("id") id: Int): UsuarioDetailsResource

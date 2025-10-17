@@ -19,6 +19,9 @@ interface UsuarioDao {
     suspend fun findAllOnce(): List<UsuarioEntity>
 
     @Query("SELECT * FROM usuarios WHERE localId = :localId")
+    suspend fun find(localId: Int): UsuarioEntity?
+
+    @Query("SELECT * FROM usuarios WHERE localId = :localId")
     fun findByLocalId(localId: Int): Flow<UsuarioEntity?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

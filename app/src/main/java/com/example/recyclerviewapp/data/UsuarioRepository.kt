@@ -9,7 +9,6 @@ import com.example.recyclerviewapp.domain.Usuario
 import com.example.recyclerviewapp.domain.UsuarioDetails
 import com.example.recyclerviewapp.data.network.ApiService
 import com.example.recyclerviewapp.domain.UsuarioRepositoryInterface
-import com.example.recyclerviewapp.domain.toEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -35,10 +34,16 @@ class UsuarioRepository(
 
     override suspend fun refreshUsuarios() = withContext(Dispatchers.IO) {
         try {
+            val usuariosLocais = usuarioDao.findAllOnce()
+
             val usuariosRemotos = api.getUsuarios().map { usuarioResource ->
-                usuarioResource.toDomain()
+                usuarioResource.toEntity(
+                    localId = usuariosLocais.firstOrNull { usuario ->
+                        usuario.idApi == usuarioResource.id
+                    }?.localId
+                )
             }
-            usuarioDao.replaceAll(usuariosRemotos.map { it.toEntity() })
+            usuarioDao.insertAll(usuariosRemotos)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -46,8 +51,12 @@ class UsuarioRepository(
 
     override suspend fun refreshUsuariosById(id: Int) {
         try {
-            val remote = api.getUsuarioPorId(id).toDomain()
-            usuarioDao.insert(remote.toEntity())
+            val usuario = usuarioDao.find(id)
+            usuario?.idApi?.let { idApi ->
+                val remote = api.getUsuarioPorId(idApi).toEntity(localId = id)
+                usuarioDao.insert(remote)
+            }
+
         } catch (e: Exception) {
             e.printStackTrace()
         }
