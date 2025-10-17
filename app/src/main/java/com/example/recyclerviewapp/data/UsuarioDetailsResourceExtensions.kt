@@ -2,7 +2,6 @@ package com.example.recyclerviewapp.data
 
 import com.example.recyclerviewapp.data.local.entities.UsuarioEntity
 import com.example.recyclerviewapp.data.network.UsuarioDetailsResource
-import com.example.recyclerviewapp.domain.UsuarioDetails
 
 fun UsuarioDetailsResource.toEntity(localId: Int?) = UsuarioEntity(
     localId = localId ?: 0,

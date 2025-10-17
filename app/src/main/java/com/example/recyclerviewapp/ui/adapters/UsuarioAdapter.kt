@@ -1,12 +1,17 @@
 package com.example.recyclerviewapp.ui.adapters
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.recyclerviewapp.R
+import com.example.recyclerviewapp.databinding.FragmentDetailsBinding
 import com.example.recyclerviewapp.databinding.ItemUsuarioBinding
 import com.example.recyclerviewapp.ui.UsuarioUi
+import androidx.core.graphics.toColorInt
 
 class UsuarioAdapter(
     private val onItemClick: (UsuarioUi) -> Unit
@@ -20,7 +25,8 @@ class UsuarioAdapter(
     }
 
     override fun onBindViewHolder(holder: UsuarioViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        val usuario: UsuarioUi = getItem(position)
+        holder.bind(usuario)
     }
 
     inner class UsuarioViewHolder(private val binding: ItemUsuarioBinding) :
@@ -28,6 +34,13 @@ class UsuarioAdapter(
 
         @SuppressLint("SetTextI18n")
         fun bind(usuario: UsuarioUi) {
+
+            if (usuario.origemLocal) {
+                binding.cardView.setCardBackgroundColor("#27E0F5".toColorInt())
+            } else {
+                binding.cardView.setCardBackgroundColor("#F5BB27".toColorInt())
+            }
+
             binding.tvName.text = usuario.name
             binding.tvUsername.text = "Username: ${usuario.username}"
             binding.tvEmail.text = "Email: ${usuario.emailVisivel}"

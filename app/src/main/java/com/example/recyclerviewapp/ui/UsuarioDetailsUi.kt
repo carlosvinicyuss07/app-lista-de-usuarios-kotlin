@@ -7,5 +7,6 @@ data class UsuarioDetailsUi(
     val websiteLabel: String,
     val formatedAddress: String,
     val formatedGeo: String,
-    val formatedCompany: String
+    val formatedCompany: String,
+    val origemLocal: Boolean
 )

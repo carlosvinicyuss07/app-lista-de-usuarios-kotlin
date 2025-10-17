@@ -5,13 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import androidx.core.graphics.toColorInt
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
-import com.example.recyclerviewapp.R
 import com.example.recyclerviewapp.databinding.FragmentDetailsBinding
-import com.example.recyclerviewapp.ui.activities.MainActivity
 import com.example.recyclerviewapp.viewmodel.DetailsViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -40,11 +38,18 @@ class DetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val userId = args.userId
-        viewModel.carregarUsuario(userId)
+        viewModel.carregarUsuario(localId = userId)
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.usuario.collect { usuario ->
                 usuario?.let {
+
+                    if (it.origemLocal) {
+                        binding.cardDetails.setCardBackgroundColor("#27E0F5".toColorInt())
+                    } else {
+                        binding.cardDetails.setCardBackgroundColor("#F5BB27".toColorInt())
+                    }
+
                     binding.txtName.text = usuario.name
                     binding.txtUsername.text = usuario.username
                     binding.txtContact.text = usuario.formatedContact

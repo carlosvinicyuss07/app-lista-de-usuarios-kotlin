@@ -46,7 +46,6 @@ class FormUsuarioFragment : Fragment() {
 
             // Aqui marcamos que é um usuário local
             val usuario = UsuarioEntity(
-                localId = id,
                 name = nome,
                 email = email,
                 username = "",
