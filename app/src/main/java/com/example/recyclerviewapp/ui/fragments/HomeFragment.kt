@@ -39,6 +39,7 @@ class HomeFragment : Fragment() {
             val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(usuario.id)
             findNavController().navigate(action)
         }
+
         binding.listaPessoas.adapter = usuarioAdapter
 
         binding.listaPessoas.apply {
@@ -47,7 +48,11 @@ class HomeFragment : Fragment() {
         }
 
         binding.swipeRefreshLayout.setOnRefreshListener {
-            viewModel.atualizarUsuariosRemotos(forceReload = true)
+            viewModel.atualizarUsuariosRemotos()
+        }
+
+        binding.fab.setOnClickListener {
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToFormUsuarioFragment())
         }
 
         viewLifecycleOwner.lifecycleScope.launch {

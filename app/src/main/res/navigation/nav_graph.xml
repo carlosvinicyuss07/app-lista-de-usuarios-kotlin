@@ -13,6 +13,16 @@
         <action
             android:id="@+id/action_homeFragment_to_detailsFragment"
             app:destination="@id/detailsFragment"/>
+        <action
+            android:id="@+id/action_homeFragment_to_formUsuarioFragment"
+            app:destination="@id/formUsuarioFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/formUsuarioFragment"
+        android:name="com.example.recyclerviewapp.ui.fragments.FormUsuarioFragment"
+        android:label="Formulário"
+        tools:layout="@layout/fragment_form_usuario">
     </fragment>
 
     <fragment

@@ -13,5 +13,6 @@ fun UsuarioDetailsResource.toDomain() = UsuarioDetails(
     geo = "Lat: ${address.geo.lat}," + " Lng: ${address.geo.lng}",
     company = "${company.name}\n" +
             "${company.catchPhrase}\n" +
-            company.bs
+            company.bs,
+    origemLocal = false
 )

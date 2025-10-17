@@ -1,6 +1,7 @@
 package com.example.recyclerviewapp.di
 
 import androidx.room.Room
+import com.example.recyclerviewapp.MIGRATION_1_2
 import com.example.recyclerviewapp.data.UsuarioRepository
 import com.example.recyclerviewapp.data.local.ListaDeUsuariosDatabase
 import org.koin.android.ext.koin.androidContext
@@ -13,7 +14,8 @@ val storageModule = module {
         Room.databaseBuilder(
             androidContext(),
             ListaDeUsuariosDatabase::class.java, "lista-de-usuarios.db"
-        ).build()
+        ).addMigrations(MIGRATION_1_2)
+            .build()
     }
     single {
         get<ListaDeUsuariosDatabase>().usuarioDao()

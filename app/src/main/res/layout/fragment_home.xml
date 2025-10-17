@@ -1,19 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/swipeRefreshLayout"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/lista_pessoas"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="8dp"
-        android:orientation="vertical"
-        android:padding="8dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_usuario"/>
+        android:layout_height="match_parent">
 
-</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/lista_pessoas"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"
+            android:padding="8dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_usuario" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:contentDescription="@string/submit"
+        android:layout_margin="8dp"
+        android:src="@drawable/ic_add"
+        app:fabSize="normal"
+        app:backgroundTint="#BB86FC"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

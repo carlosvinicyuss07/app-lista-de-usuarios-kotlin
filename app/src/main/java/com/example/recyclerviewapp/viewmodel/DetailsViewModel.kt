@@ -24,12 +24,12 @@ class DetailsViewModel(
     private val _erro = MutableSharedFlow<String>()
     val erro: SharedFlow<String> get() = _erro
 
-    fun carregarUsuario(id: Int) {
+    fun carregarUsuario(localId: Int) {
         viewModelScope.launch {
             _loading.value = true
             try {
-                repository.refreshUsuariosById(id)
-                repository.fecthUserById(id).collect { user ->
+                repository.refreshUsuariosById(localId)
+                repository.fecthUserById(localId).collect { user ->
                     _usuario.value = user?.toUi()
                     _loading.value = false
                 }

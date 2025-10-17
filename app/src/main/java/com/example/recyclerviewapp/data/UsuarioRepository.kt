@@ -1,6 +1,8 @@
 package com.example.recyclerviewapp.data
 
+import android.util.Log
 import com.example.recyclerviewapp.data.local.dao.UsuarioDao
+import com.example.recyclerviewapp.data.local.entities.UsuarioEntity
 import com.example.recyclerviewapp.data.local.toDetailsDomain
 import com.example.recyclerviewapp.data.local.toDomain
 import com.example.recyclerviewapp.domain.Usuario
@@ -26,7 +28,7 @@ class UsuarioRepository(
     }
 
     override suspend fun fecthUserById(id: Int): Flow<UsuarioDetails?> {
-        return usuarioDao.findById(id).map { entity ->
+        return usuarioDao.findByLocalId(id).map { entity ->
             entity?.toDetailsDomain()
         }
     }
@@ -48,6 +50,41 @@ class UsuarioRepository(
             usuarioDao.insert(remote.toEntity())
         } catch (e: Exception) {
             e.printStackTrace()
+        }
+    }
+
+    override suspend fun insert(usuario: UsuarioEntity) {
+        usuarioDao.insert(usuario)
+    }
+
+    override suspend fun refreshUsuariosSincronizado() {
+        try {
+            val usuariosApi = api.getUsuarios() // busca lista da API
+            val usuariosLocais = usuarioDao.findAllOnce() // busca lista local sem Flow
+
+            usuariosApi.forEach { usuarioApi ->
+
+                val existente = usuariosLocais.find { it.idApi == usuarioApi.id }
+
+                val usuarioEntity = UsuarioEntity(
+                    localId = existente?.localId ?: 0,
+                    idApi = usuarioApi.id,
+                    name = usuarioApi.name,
+                    username = usuarioApi.username,
+                    email = usuarioApi.email,
+                    origemLocal = false
+                )
+
+                if (existente != null) {
+                    usuarioDao.update(usuarioEntity)
+                } else {
+                    usuarioDao.insert(usuarioEntity)
+                }
+            }
+
+        } catch (e: Exception) {
+            Log.e("UsuarioRepository", "Erro ao sincronizar usuários", e)
+            throw e
         }
     }
 }

@@ -7,16 +7,18 @@ fun Usuario.toUi() = UsuarioUi(
     id = id,
     name = nomeCompleto,
     username = nomeCompleto.split(" ")[0],
-    emailVisivel = email
+    emailVisivel = email,
+    origemLocal = origemLocal
 )
 
 fun Usuario.toEntity() = UsuarioEntity(
-    id = id,
+    idApi = id,
     name = nomeCompleto,
     username = nomeCompleto.split(" ")[0],
     email = email,
     address = "",
     phone = "",
     website = "",
-    company = ""
+    company = "",
+    origemLocal = false
 )

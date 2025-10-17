@@ -14,12 +14,13 @@ fun UsuarioDetails.toUi() = UsuarioDetailsUi(
 )
 
 fun UsuarioDetails.toEntity() = UsuarioEntity(
-    id = id,
+    idApi = id,
     name = fullName,
     username = fullName.split(" ")[0],
     email = contact.split(" | ")[0],
     phone = contact.split(" | ")[1],
     website = website,
     address = address,
-    company = company
+    company = company,
+    origemLocal = false
 )

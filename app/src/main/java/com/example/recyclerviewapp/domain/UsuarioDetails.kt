@@ -7,5 +7,6 @@ data class UsuarioDetails(
     val website: String,
     val address: String,
     val geo: String,
-    val company: String
+    val company: String,
+    val origemLocal: Boolean
 )

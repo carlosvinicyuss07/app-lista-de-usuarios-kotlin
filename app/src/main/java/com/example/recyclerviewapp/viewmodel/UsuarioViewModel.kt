@@ -1,7 +1,10 @@
 package com.example.recyclerviewapp.viewmodel
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.recyclerviewapp.data.local.entities.UsuarioEntity
 import com.example.recyclerviewapp.domain.UsuarioRepositoryInterface
 import com.example.recyclerviewapp.domain.toUi
 import com.example.recyclerviewapp.ui.UsuarioUi
@@ -21,10 +24,13 @@ class UsuarioViewModel(
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
 
+    private val _status = MutableLiveData<UsuarioStatus>()
+    val status: LiveData<UsuarioStatus> = _status
+
     private val _erro = MutableSharedFlow<String>()
     val erro: SharedFlow<String> = _erro
 
-    fun atualizarUsuariosRemotos(forceReload: Boolean = false) {
+    fun atualizarUsuariosRemotos() {
         viewModelScope.launch {
             _isLoading.value = true
             try {
@@ -40,4 +46,21 @@ class UsuarioViewModel(
             }
         }
     }
+
+    fun adicionarUsuarioLocal(usuario: UsuarioEntity) {
+        viewModelScope.launch {
+            try {
+                repository.insert(usuario.copy(origemLocal = true))
+                _status.postValue(UsuarioStatus.Sucesso)
+            } catch (e: Exception) {
+                _status.postValue(UsuarioStatus.Erro(e.message ?: "Erro ao adicionarUsuarioLocal usuário"))
+            }
+        }
+    }
+
+    sealed class UsuarioStatus {
+        object Sucesso : UsuarioStatus()
+        data class Erro(val mensagem: String) : UsuarioStatus()
+    }
+
 }
