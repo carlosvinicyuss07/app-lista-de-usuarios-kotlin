@@ -1,6 +1,6 @@
 package com.example.recyclerviewapp.data.network
 
-data class UsuarioDetailsResource(
+data class UsuarioResourceOriginal(
     val id: Int,
     val name: String,
     val username: String,
@@ -25,7 +25,5 @@ data class GeoResource(
 )
 
 data class CompanyResource(
-    val name: String,
-    val catchPhrase: String,
-    val bs: String
+    val name: String
 )

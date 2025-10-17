@@ -5,10 +5,10 @@ import com.example.recyclerviewapp.ui.UsuarioDetailsUi
 fun UsuarioDetails.toUi() = UsuarioDetailsUi(
     name = fullName,
     username = fullName.split(" ")[0],
-    formatedContact = "Contact: $contact",
+    formatedContact = "Contact: $email | $phone",
     websiteLabel = "Website: $website",
     formatedAddress = address,
-    formatedGeo = geo,
+    formatedGeo = "Geo: $geo",
     formatedCompany = company,
     origemLocal = origemLocal
 )

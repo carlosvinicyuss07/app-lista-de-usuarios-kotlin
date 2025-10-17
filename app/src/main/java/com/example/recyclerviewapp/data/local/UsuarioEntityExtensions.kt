@@ -6,7 +6,7 @@ import com.example.recyclerviewapp.domain.UsuarioDetails
 
 fun UsuarioEntity.toDomain() = Usuario(
     id = localId,
-    nomeCompleto = name,
+    fullname = name,
     email = email,
     origemLocal = origemLocal
 )
@@ -14,10 +14,12 @@ fun UsuarioEntity.toDomain() = Usuario(
 fun UsuarioEntity.toDetailsDomain() = UsuarioDetails(
     id = localId,
     fullName = name,
-    contact = "$email | $phone",
-    website = website.toString(),
-    address = address.toString(),
-    geo = "",
-    company = company.toString(),
+    email = email,
+    phone = phone,
+    website = website,
+    address = "$street, $suite/n" +
+            "$city - CEP: $zipcode",
+    geo = "lat: $lat | lng: $lng",
+    company = company,
     origemLocal = origemLocal
 )

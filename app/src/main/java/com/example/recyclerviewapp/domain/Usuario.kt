@@ -2,7 +2,7 @@ package com.example.recyclerviewapp.domain
 
 data class Usuario(
     val id: Int,
-    val nomeCompleto: String,
+    val fullname: String,
     val email: String,
     val origemLocal: Boolean
 )

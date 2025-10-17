@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import com.example.recyclerviewapp.data.local.dao.UsuarioDao
 import com.example.recyclerviewapp.data.local.entities.UsuarioEntity
 
-@Database(entities = [UsuarioEntity::class], version = 2)
+@Database(entities = [UsuarioEntity::class], version = 3)
 abstract class ListaDeUsuariosDatabase : RoomDatabase() {
     abstract fun usuarioDao(): UsuarioDao
 }
