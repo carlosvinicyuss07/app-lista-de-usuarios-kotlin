@@ -3,6 +3,7 @@ package com.example.recyclerviewapp.di
 import androidx.room.Room
 import com.example.recyclerviewapp.MIGRATION_1_2
 import com.example.recyclerviewapp.MIGRATION_2_3
+import com.example.recyclerviewapp.MIGRATION_3_4
 import com.example.recyclerviewapp.data.UsuarioRepository
 import com.example.recyclerviewapp.data.local.ListaDeUsuariosDatabase
 import org.koin.android.ext.koin.androidContext
@@ -15,7 +16,7 @@ val storageModule = module {
         Room.databaseBuilder(
             androidContext(),
             ListaDeUsuariosDatabase::class.java, "lista-de-usuarios.db"
-        ).addMigrations(MIGRATION_2_3)
+        ).addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
             .build()
     }
     single {

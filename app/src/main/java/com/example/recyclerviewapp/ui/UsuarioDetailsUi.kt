@@ -8,5 +8,6 @@ data class UsuarioDetailsUi(
     val formatedAddress: String,
     val formatedGeo: String,
     val formatedCompany: String,
-    val origemLocal: Boolean
+    val origemLocal: Boolean,
+    val photoUri: String?
 )

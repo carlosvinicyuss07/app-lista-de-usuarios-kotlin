@@ -2,6 +2,7 @@ package com.example.recyclerviewapp.ui.adapters
 
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -12,6 +13,7 @@ import com.example.recyclerviewapp.databinding.FragmentDetailsBinding
 import com.example.recyclerviewapp.databinding.ItemUsuarioBinding
 import com.example.recyclerviewapp.ui.UsuarioUi
 import androidx.core.graphics.toColorInt
+import androidx.core.net.toUri
 
 class UsuarioAdapter(
     private val onItemClick: (UsuarioUi) -> Unit
@@ -39,6 +41,13 @@ class UsuarioAdapter(
                 binding.cardView.setCardBackgroundColor("#27E0F5".toColorInt())
             } else {
                 binding.cardView.setCardBackgroundColor("#F5BB27".toColorInt())
+            }
+
+            if (usuario.origemLocal && !usuario.photoUri.isNullOrEmpty()) {
+                val uri = usuario.photoUri.toUri()
+                binding.imgProfile.setImageURI(uri)
+            } else {
+                binding.imgProfile.setImageResource(R.drawable.user_details_image)
             }
 
             binding.tvName.text = usuario.name

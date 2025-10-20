@@ -1,6 +1,7 @@
 package com.example.recyclerviewapp.ui.fragments
 
 import android.annotation.SuppressLint
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -21,6 +22,7 @@ import com.example.recyclerviewapp.viewmodel.DetailsViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.getValue
+import androidx.core.net.toUri
 
 class DetailsFragment : Fragment() {
 
@@ -73,6 +75,10 @@ class DetailsFragment : Fragment() {
                     } else {
                         binding.cardDetails.setCardBackgroundColor("#F5BB27".toColorInt())
                     }
+
+                    usuario.photoUri?.let { uri ->
+                        binding.imgProfile.setImageURI(uri.toUri())
+                    } ?: binding.imgProfile.setImageResource(R.drawable.user_details_image)
 
                     binding.txtName.text = usuario.name
                     binding.txtUsername.text = usuario.username

@@ -7,5 +7,6 @@ data class UsuarioUi(
     val name: String,
     val username: String,
     val emailVisivel: String,
-    val origemLocal: Boolean
+    val origemLocal: Boolean,
+    val photoUri: String?
 )

@@ -2,7 +2,6 @@ package com.example.recyclerviewapp.data.local.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.recyclerviewapp.data.network.CompanyResource
 
 @Entity(tableName = "usuarios")
 data class UsuarioEntity(
@@ -22,5 +21,6 @@ data class UsuarioEntity(
     val phone: String,
     val website: String,
     val company: String,
-    val origemLocal: Boolean = false
+    val origemLocal: Boolean = false,
+    val photoUri: String? = null
 )

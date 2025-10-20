@@ -19,9 +19,12 @@
 
         <ImageView
             android:id="@+id/imgProfile"
-            android:layout_width="70dp"
-            android:layout_height="100dp"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:scaleType="centerCrop"
             android:src="@drawable/user_details_image"
+            android:clipToOutline="true"
+            android:background="@drawable/bg_circle"
             tools:ignore="ContentDescription" />
 
         <LinearLayout

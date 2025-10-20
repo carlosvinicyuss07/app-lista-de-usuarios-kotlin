@@ -11,6 +11,31 @@
         android:layout_height="match_parent"
         android:padding="12dp">
 
+        <ImageView
+            android:id="@+id/imgProfileForm"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_circle"
+            android:clipToOutline="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/user_details_image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/txtEndereco"
+            tools:ignore="ContentDescription,MissingConstraints"
+            tools:layout_editor_absoluteY="12dp" />
+
+        <Button
+            android:id="@+id/btnAddPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Adicionar Foto"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgProfileForm"
+            tools:ignore="MissingConstraints" />
+
         <TextView
             android:id="@+id/txtDadosPessoais"
             android:layout_width="wrap_content"
@@ -18,7 +43,10 @@
             android:text="Informações Pessoais"
             android:textSize="20sp"
             android:textStyle="bold"
-            tools:ignore="MissingConstraints" />
+            tools:ignore="MissingConstraints"
+            app:layout_constraintTop_toBottomOf="@id/btnAddPhoto"
+            tools:layout_editor_absoluteX="12dp"
+            tools:layout_editor_absoluteY="12dp" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layoutNome"
@@ -28,7 +56,7 @@
             android:hint="Nome"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="@id/txtDadosPessoais">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edtNome"
@@ -83,13 +111,45 @@
             tools:ignore="MissingConstraints" />
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutCity"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="98dp"
+            android:hint="Cidade"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtEndereco"
+            tools:ignore="MissingConstraints">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtCity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layoutZipcode"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:hint="CEP"
+            app:layout_constraintStart_toEndOf="@+id/espacamento"
+            app:layout_constraintTop_toBottomOf="@+id/txtEndereco"
+            tools:ignore="MissingConstraints">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtZipcode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layoutStreet"
             android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:hint="Rua"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtEndereco"
+            app:layout_constraintTop_toBottomOf="@id/layoutCity"
             tools:ignore="MissingConstraints">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -113,45 +173,13 @@
             android:layout_marginTop="6dp"
             android:hint="Conjunto"
             app:layout_constraintStart_toEndOf="@+id/espacamento"
-            app:layout_constraintTop_toBottomOf="@id/txtEndereco"
+            app:layout_constraintTop_toBottomOf="@id/layoutZipcode"
             tools:ignore="MissingConstraints">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edtSuite"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layoutCity"
-            android:layout_width="160dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="98dp"
-            android:hint="Cidade"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layoutStreet"
-            tools:ignore="MissingConstraints">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edtCity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layoutZipcode"
-            android:layout_width="160dp"
-            android:layout_height="wrap_content"
-            android:hint="CEP"
-            app:layout_constraintStart_toEndOf="@+id/espacamento"
-            app:layout_constraintTop_toBottomOf="@+id/layoutSuite"
-            tools:ignore="MissingConstraints">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edtZipcode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
@@ -163,7 +191,7 @@
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layoutCity"
+            app:layout_constraintTop_toBottomOf="@+id/layoutStreet"
             tools:ignore="MissingConstraints" />
 
         <com.google.android.material.textfield.TextInputLayout

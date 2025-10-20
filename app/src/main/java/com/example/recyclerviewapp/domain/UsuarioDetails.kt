@@ -9,5 +9,6 @@ data class UsuarioDetails(
     val address: String,
     val geo: String,
     val company: String,
-    val origemLocal: Boolean
+    val origemLocal: Boolean,
+    val photoUri: String?
 )

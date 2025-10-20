@@ -8,7 +8,8 @@ fun UsuarioEntity.toDomain() = Usuario(
     id = localId,
     fullname = name,
     email = email,
-    origemLocal = origemLocal
+    origemLocal = origemLocal,
+    photoUri = photoUri
 )
 
 fun UsuarioEntity.toDetailsDomain() = UsuarioDetails(
@@ -21,5 +22,6 @@ fun UsuarioEntity.toDetailsDomain() = UsuarioDetails(
             "$city - CEP: $zipcode",
     geo = "lat: $lat | lng: $lng",
     company = company,
-    origemLocal = origemLocal
+    origemLocal = origemLocal,
+    photoUri = photoUri
 )

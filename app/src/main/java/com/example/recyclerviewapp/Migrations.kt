@@ -100,3 +100,10 @@ val MIGRATION_2_3 = object : Migration(2, 3) {
         db.execSQL("ALTER TABLE usuarios_new RENAME TO usuarios")
     }
 }
+
+val MIGRATION_3_4 = object : Migration(3, 4) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        // Adiciona a nova coluna para armazenar a URI da foto de perfil
+        db.execSQL("ALTER TABLE usuarios ADD COLUMN photoUri TEXT")
+    }
+}

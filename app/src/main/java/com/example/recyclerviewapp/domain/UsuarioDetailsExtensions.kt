@@ -10,5 +10,6 @@ fun UsuarioDetails.toUi() = UsuarioDetailsUi(
     formatedAddress = address,
     formatedGeo = "Geo: $geo",
     formatedCompany = company,
-    origemLocal = origemLocal
+    origemLocal = origemLocal,
+    photoUri = photoUri
 )

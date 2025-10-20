@@ -7,5 +7,6 @@ fun Usuario.toUi() = UsuarioUi(
     name = fullname,
     username = fullname.split(" ")[0],
     emailVisivel = email,
-    origemLocal = origemLocal
+    origemLocal = origemLocal,
+    photoUri = photoUri
 )

@@ -1,5 +1,9 @@
 package com.example.recyclerviewapp.ui.fragments
 
+import android.Manifest
+import android.R
+import android.app.AlertDialog
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -8,23 +12,46 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.FileProvider
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
-import com.example.recyclerviewapp.R
 import com.example.recyclerviewapp.data.local.entities.UsuarioEntity
 import com.example.recyclerviewapp.databinding.FragmentFormUsuarioBinding
 import com.example.recyclerviewapp.viewmodel.UsuarioViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.io.File
 
 class FormUsuarioFragment : Fragment() {
 
     private var _binding: FragmentFormUsuarioBinding? = null
     private val binding get() = _binding!!
 
+    private var imageUri: Uri? = null
+
     private val viewModel: UsuarioViewModel by viewModel()
+
+    private val cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+        if (success) binding.imgProfileForm.setImageURI(imageUri)
+    }
+
+    private val galleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        uri?.let {
+            imageUri = uri
+            binding.imgProfileForm.setImageURI(uri)
+        }
+    }
+
+    private val permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+        val cameraGranted = permissions[Manifest.permission.CAMERA] ?: false
+        val storageGranted = permissions[Manifest.permission.READ_EXTERNAL_STORAGE] ?: false
+
+        if (cameraGranted || storageGranted) showImageOptionsDialog()
+        else Toast.makeText(requireContext(), "Permissões necessárias não concedidas", Toast.LENGTH_SHORT).show()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,6 +77,15 @@ class FormUsuarioFragment : Fragment() {
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
+        binding.btnAddPhoto.setOnClickListener {
+            permissionLauncher.launch(
+                arrayOf(
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                )
+            )
+        }
+
         setupListeners()
         observeStatus()
     }
@@ -65,8 +101,11 @@ class FormUsuarioFragment : Fragment() {
             val phone = binding.edtPhone.text.toString().trim()
             val website = binding.edtWebsite.text.toString().trim()
             val company = binding.edtCompany.text.toString().trim()
+            val photoUri = imageUri?.toString()
 
-            if (nome.isEmpty() || email.isEmpty()) {
+            if (nome.isEmpty() || email.isEmpty() || street.isEmpty()
+                || suite.isEmpty() || city.isEmpty() || zipcode.isEmpty()
+                || phone.isEmpty() || website.isEmpty() || company.isEmpty()) {
                 Toast.makeText(requireContext(), "Preencha todos os campos!", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -85,6 +124,7 @@ class FormUsuarioFragment : Fragment() {
                 phone = phone,
                 website = website,
                 company = company,
+                photoUri = photoUri,
                 origemLocal = true,
             )
 
@@ -109,5 +149,32 @@ class FormUsuarioFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun showImageOptionsDialog() {
+        val options = arrayOf("Tirar foto", "Escolher da galeria")
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("Selecionar foto de perfil")
+            .setItems(options) { _, which ->
+                when (which) {
+                    0 -> openCamera()
+                    1 -> openGallery()
+                }
+            }.show()
+    }
+
+    private fun openCamera() {
+        val imageFile = File.createTempFile("profile_", ".jpg", requireContext().cacheDir)
+        imageUri = FileProvider.getUriForFile(
+            requireContext(),
+            "${requireContext().packageName}.fileprovider",
+            imageFile
+        )
+        cameraLauncher.launch(imageUri)
+    }
+
+    private fun openGallery() {
+        galleryLauncher.launch("image/*")
     }
 }
