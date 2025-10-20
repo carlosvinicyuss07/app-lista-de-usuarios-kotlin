@@ -21,7 +21,7 @@
     <fragment
         android:id="@+id/formUsuarioFragment"
         android:name="com.example.recyclerviewapp.ui.fragments.FormUsuarioFragment"
-        android:label="Formulário"
+        android:label="Cadastrar Usuário"
         tools:layout="@layout/fragment_form_usuario">
     </fragment>
 
