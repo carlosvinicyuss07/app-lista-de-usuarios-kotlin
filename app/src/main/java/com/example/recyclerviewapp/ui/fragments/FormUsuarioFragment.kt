@@ -1,7 +1,6 @@
 package com.example.recyclerviewapp.ui.fragments
 
 import android.Manifest
-import android.R
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
@@ -28,6 +27,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.recyclerviewapp.data.local.entities.UsuarioEntity
 import com.example.recyclerviewapp.databinding.FragmentFormUsuarioBinding
+import com.example.recyclerviewapp.viewmodel.FormCadastroViewModel
 import com.example.recyclerviewapp.viewmodel.UsuarioViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
@@ -39,7 +39,7 @@ class FormUsuarioFragment : Fragment() {
 
     private var imageUri: Uri? = null
 
-    private val viewModel: UsuarioViewModel by viewModel()
+    private val viewModel: FormCadastroViewModel by viewModel()
 
     private val cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
         if (success) binding.imgProfileForm.setImageURI(imageUri)
@@ -91,15 +91,8 @@ class FormUsuarioFragment : Fragment() {
             showImageOptionsDialog()
         }
 
-        setupObservers()
         setupListeners()
         observeStatus()
-    }
-
-    private fun setupObservers() {
-        // observar o state
-
-
     }
 
     private fun setupListeners() {
@@ -147,11 +140,11 @@ class FormUsuarioFragment : Fragment() {
     private fun observeStatus() {
         viewModel.status.observe(viewLifecycleOwner) { status ->
             when (status) {
-                is UsuarioViewModel.UsuarioStatus.Sucesso -> {
+                is FormCadastroViewModel.UsuarioStatus.Sucesso -> {
                     Toast.makeText(requireContext(), "Usuário cadastrado!", Toast.LENGTH_SHORT).show()
                     findNavController().navigateUp()
                 }
-                is UsuarioViewModel.UsuarioStatus.Erro -> {
+                is FormCadastroViewModel.UsuarioStatus.Erro -> {
                     Toast.makeText(requireContext(), status.mensagem, Toast.LENGTH_SHORT).show()
                 }
             }
