@@ -38,9 +38,5 @@
 
     <uses-permission android:name="android.permission.CAMERA"
         tools:ignore="ManifestOrder" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="32" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="32"
-        tools:ignore="ScopedStorage" />
 
 </manifest>

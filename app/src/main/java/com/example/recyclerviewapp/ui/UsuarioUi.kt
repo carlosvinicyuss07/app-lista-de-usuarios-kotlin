@@ -1,6 +1,6 @@
 package com.example.recyclerviewapp.ui
 
-import android.graphics.Color
+import androidx.annotation.ColorInt
 
 data class UsuarioUi(
     val id: Int,
@@ -8,5 +8,6 @@ data class UsuarioUi(
     val username: String,
     val emailVisivel: String,
     val origemLocal: Boolean,
-    val photoUri: String?
+    val photoUri: String?,
+    val cor: Int
 )

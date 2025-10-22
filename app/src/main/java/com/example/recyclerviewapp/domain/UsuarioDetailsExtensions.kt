@@ -1,5 +1,6 @@
 package com.example.recyclerviewapp.domain
 
+import androidx.core.graphics.toColorInt
 import com.example.recyclerviewapp.ui.UsuarioDetailsUi
 
 fun UsuarioDetails.toUi() = UsuarioDetailsUi(
@@ -11,5 +12,10 @@ fun UsuarioDetails.toUi() = UsuarioDetailsUi(
     formatedGeo = "Geo: $geo",
     formatedCompany = company,
     origemLocal = origemLocal,
-    photoUri = photoUri
+    photoUri = photoUri,
+    cor = if (origemLocal) {
+        "#27E0F5".toColorInt()
+    } else {
+        "#F5BB27".toColorInt()
+    }
 )

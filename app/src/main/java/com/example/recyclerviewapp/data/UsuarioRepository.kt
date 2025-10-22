@@ -62,7 +62,7 @@ class UsuarioRepository(
         }
     }
 
-    override suspend fun insert(usuario: UsuarioEntity) {
+    override suspend fun insert(usuario: UsuarioEntity) = withContext(Dispatchers.IO) {
         usuarioDao.insert(usuario)
     }
 }
