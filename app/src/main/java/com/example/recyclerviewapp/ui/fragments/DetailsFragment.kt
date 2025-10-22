@@ -70,11 +70,7 @@ class DetailsFragment : Fragment() {
             viewModel.usuario.collect { usuario ->
                 usuario?.let {
 
-                    if (it.origemLocal) {
-                        binding.cardDetails.setCardBackgroundColor("#27E0F5".toColorInt())
-                    } else {
-                        binding.cardDetails.setCardBackgroundColor("#F5BB27".toColorInt())
-                    }
+                    binding.cardDetails.setCardBackgroundColor(usuario.cor)
 
                     usuario.photoUri?.let { uri ->
                         binding.imgProfile.setImageURI(uri.toUri())

@@ -37,11 +37,7 @@ class UsuarioAdapter(
         @SuppressLint("SetTextI18n")
         fun bind(usuario: UsuarioUi) {
 
-            if (usuario.origemLocal) {
-                binding.cardView.setCardBackgroundColor("#27E0F5".toColorInt())
-            } else {
-                binding.cardView.setCardBackgroundColor("#F5BB27".toColorInt())
-            }
+            binding.cardView.setCardBackgroundColor(usuario.cor)
 
             if (usuario.origemLocal && !usuario.photoUri.isNullOrEmpty()) {
                 val uri = usuario.photoUri.toUri()

@@ -8,11 +8,13 @@ import com.example.recyclerviewapp.data.local.entities.UsuarioEntity
 import com.example.recyclerviewapp.domain.UsuarioRepositoryInterface
 import com.example.recyclerviewapp.domain.toUi
 import com.example.recyclerviewapp.ui.UsuarioUi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class UsuarioViewModel(
     private val repository: UsuarioRepositoryInterface
@@ -53,7 +55,11 @@ class UsuarioViewModel(
                 repository.insert(usuario.copy(origemLocal = true))
                 _status.postValue(UsuarioStatus.Sucesso)
             } catch (e: Exception) {
-                _status.postValue(UsuarioStatus.Erro(e.message ?: "Erro ao adicionarUsuarioLocal usuário"))
+                _status.postValue(
+                    UsuarioStatus.Erro(
+                        e.message ?: "Erro ao adicionarUsuarioLocal usuário"
+                    )
+                )
             }
         }
     }
