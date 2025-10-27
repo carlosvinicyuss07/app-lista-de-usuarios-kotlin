@@ -15,6 +15,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -22,15 +23,23 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.recyclerviewapp.data.local.entities.UsuarioEntity
 import com.example.recyclerviewapp.databinding.FragmentFormUsuarioBinding
 import com.example.recyclerviewapp.viewmodel.FormCadastroViewModel
+import com.example.recyclerviewapp.viewmodel.FormEffect
+import com.example.recyclerviewapp.viewmodel.FormIntent
 import com.example.recyclerviewapp.viewmodel.UsuarioViewModel
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
+import androidx.core.net.toUri
+import com.example.recyclerviewapp.R
 
 class FormUsuarioFragment : Fragment() {
 
@@ -42,7 +51,9 @@ class FormUsuarioFragment : Fragment() {
     private val viewModel: FormCadastroViewModel by viewModel()
 
     private val cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
-        if (success) binding.imgProfileForm.setImageURI(imageUri)
+        if (success) {
+            viewModel.process(FormIntent.PhotoUriChanged(value = imageUri.toString()))
+        }
     }
 
     private val cameraPermissionLauncher = registerForActivityResult(
@@ -56,8 +67,7 @@ class FormUsuarioFragment : Fragment() {
         ActivityResultContracts.PickVisualMedia()
     ) { uri ->
         if (uri != null) {
-            binding.imgProfileForm.setImageURI(uri)
-            imageUri = uri
+            viewModel.process(FormIntent.PhotoUriChanged(value = uri.toString()))
         } else {
             Toast.makeText(requireContext(), "Nenhuma imagem selecionada", Toast.LENGTH_SHORT).show()
         }
@@ -93,59 +103,93 @@ class FormUsuarioFragment : Fragment() {
 
         setupListeners()
         observeStatus()
+        observeEffects()
     }
 
     private fun setupListeners() {
+        binding.edtNome.doOnTextChanged { text, _, _, _ ->
+            viewModel.process(FormIntent.NomeChanged(text.toString()))
+        }
+        binding.edtEmail.doOnTextChanged { text, _, _, _ ->
+            viewModel.process(FormIntent.EmailChanged(text.toString()))
+        }
+        binding.edtStreet.doOnTextChanged { text, _, _, _ ->
+            viewModel.process(FormIntent.StreetChanged(text.toString()))
+        }
+        binding.edtSuite.doOnTextChanged { text, _, _, _ ->
+            viewModel.process(FormIntent.SuiteChanged(text.toString()))
+        }
+        binding.edtCity.doOnTextChanged { text, _, _, _ ->
+            viewModel.process(FormIntent.CityChanged(text.toString()))
+        }
+        binding.edtZipcode.doOnTextChanged { text, _, _, _ ->
+            viewModel.process(FormIntent.ZipcodeChanged(text.toString()))
+        }
+        binding.edtPhone.doOnTextChanged { text, _, _, _ ->
+            viewModel.process(FormIntent.PhoneChanged(text.toString()))
+        }
+        binding.edtWebsite.doOnTextChanged { text, _, _, _ ->
+            viewModel.process(FormIntent.WebsiteChanged(text.toString()))
+        }
+        binding.edtCompany.doOnTextChanged { text, _, _, _ ->
+            viewModel.process(FormIntent.CompanyChanged(text.toString()))
+        }
+
         binding.btnSalvar.setOnClickListener {
-            val nome = binding.edtNome.text.toString().trim()
-            val email = binding.edtEmail.text.toString().trim()
-            val street = binding.edtStreet.text.toString().trim()
-            val suite = binding.edtSuite.text.toString().trim()
-            val city = binding.edtCity.text.toString().trim()
-            val zipcode = binding.edtZipcode.text.toString().trim()
-            val phone = binding.edtPhone.text.toString().trim()
-            val website = binding.edtWebsite.text.toString().trim()
-            val company = binding.edtCompany.text.toString().trim()
-            val photoUri = imageUri?.toString()
-
-            if (nome.isEmpty() || email.isEmpty() || street.isEmpty()
-                || suite.isEmpty() || city.isEmpty() || zipcode.isEmpty()
-                || phone.isEmpty() || website.isEmpty() || company.isEmpty()) {
-                Toast.makeText(requireContext(), "Preencha todos os campos!", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            // Aqui marcamos que é um usuário local
-            val usuario = UsuarioEntity(
-                name = nome,
-                email = email,
-                username = "",
-                street = street,
-                suite = suite,
-                city = city,
-                zipcode = zipcode,
-                lat = "01010101",
-                lng = "01010101",
-                phone = phone,
-                website = website,
-                company = company,
-                photoUri = photoUri,
-                origemLocal = true,
-            )
-
-            viewModel.adicionarUsuarioLocal(usuario)
+            viewModel.process(FormIntent.Submit)
         }
     }
 
     private fun observeStatus() {
-        viewModel.status.observe(viewLifecycleOwner) { status ->
-            when (status) {
-                is FormCadastroViewModel.UsuarioStatus.Sucesso -> {
-                    Toast.makeText(requireContext(), "Usuário cadastrado!", Toast.LENGTH_SHORT).show()
-                    findNavController().navigateUp()
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.state.collect { state ->
+                    binding.edtNome.setTextIfDifferent(state.nome.value)
+                    binding.edtNome.error = state.nome.error
+                    binding.edtEmail.setTextIfDifferent(state.email.value)
+                    binding.edtEmail.error = state.email.error
+                    binding.edtStreet.setTextIfDifferent(state.street.value)
+                    binding.edtStreet.error = state.street.error
+                    binding.edtSuite.setTextIfDifferent(state.suite.value)
+                    binding.edtSuite.error = state.suite.error
+                    binding.edtCity.setTextIfDifferent(state.city.value)
+                    binding.edtCity.error = state.city.error
+                    binding.edtZipcode.setTextIfDifferent(state.zipcode.value)
+                    binding.edtZipcode.error = state.zipcode.error
+                    binding.edtPhone.setTextIfDifferent(state.phone.value)
+                    binding.edtPhone.error = state.phone.error
+                    binding.edtWebsite.setTextIfDifferent(state.website.value)
+                    binding.edtWebsite.error = state.website.error
+                    binding.edtCompany.setTextIfDifferent(state.company.value)
+                    binding.edtCompany.error = state.company.error
+
+                    if (state.photoUri.value.isNotBlank()) {
+                        val uri = state.photoUri.value.toUri()
+                        binding.imgProfileForm.setImageURI(uri)
+                    } else {
+                        binding.imgProfileForm.setImageResource(R.drawable.user_details_image)
+                    }
+
+                    binding.btnSalvar.isEnabled = state.isSaveEnable
+
                 }
-                is FormCadastroViewModel.UsuarioStatus.Erro -> {
-                    Toast.makeText(requireContext(), status.mensagem, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun observeEffects() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.effect.collect { effect ->
+                    when(effect) {
+                        FormEffect.SuccessSaved -> {
+                            Toast.makeText(requireContext(), "Salvo com sucesso", Toast.LENGTH_SHORT).show()
+                            findNavController().popBackStack()
+                        }
+                        is FormEffect.ShowMessage -> {
+                            Toast.makeText(requireContext(), effect.text, Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 }
             }
         }
@@ -210,5 +254,9 @@ class FormUsuarioFragment : Fragment() {
             imageFile
         )
         cameraLauncher.launch(imageUri)
+    }
+
+    fun EditText.setTextIfDifferent(value: String) {
+        if (text?.toString() != value) setText(value)
     }
 }
