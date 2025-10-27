@@ -9,7 +9,11 @@ fun UsuarioDetails.toUi() = UsuarioDetailsUi(
     formatedContact = "Contact: $email | $phone",
     websiteLabel = "Website: $website",
     formatedAddress = address,
-    formatedGeo = "Geo: $geo",
+    formatedGeo = if (origemLocal) {
+        ""
+    } else {
+        "Geo: $geo"
+    },
     formatedCompany = company,
     origemLocal = origemLocal,
     photoUri = photoUri,
