@@ -13,4 +13,6 @@ interface UsuarioRepositoryInterface {
 
     suspend fun insert(usuario: UsuarioEntity)
 
+    suspend fun emailExists(email: String): Boolean
+
 }

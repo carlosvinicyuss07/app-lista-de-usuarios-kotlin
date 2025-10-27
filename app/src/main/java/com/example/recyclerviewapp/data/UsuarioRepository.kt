@@ -64,4 +64,8 @@ class UsuarioRepository(
     override suspend fun insert(usuario: UsuarioEntity) = withContext(Dispatchers.IO) {
         usuarioDao.insert(usuario)
     }
+
+    override suspend fun emailExists(email: String): Boolean {
+        return usuarioDao.emailExists(email)
+    }
 }
