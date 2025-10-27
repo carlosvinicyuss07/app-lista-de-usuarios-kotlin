@@ -50,18 +50,28 @@ class FormCadastroViewModel(
                 }
             }
             is FormIntent.EmailChanged -> {
-                val error = validateEmail(intent.value)
-                _state.update {
-                    it.copy(
-                        email = it.email.copy(
-                            value = intent.value,
-                            error = error
-                        ),
-                        isSaveEnable = validateAllFields(it.copy(
-                            email = it.email.copy(value = intent.value, error = error)
-                        ))
-                    )
+                viewModelScope.launch {
+                    val email = intent.value.trim()
+                    val formatError = validateEmail(email)
+
+                    val duplicateError = if (repository.emailExists(email)) {
+                        "Email já cadastrado"
+                    } else null
+
+                    val finalError = formatError ?: duplicateError
+                    _state.update {
+                        it.copy(
+                            email = it.email.copy(
+                                value = email,
+                                error = finalError
+                            ),
+                            isSaveEnable = validateAllFields(it.copy(
+                                email = it.email.copy(value = email, error = finalError)
+                            ))
+                        )
+                    }
                 }
+
             }
             is FormIntent.StreetChanged -> {
                 val error = validateStreet(intent.value)
@@ -189,6 +199,17 @@ class FormCadastroViewModel(
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true) }
             try {
+                val emailExists = repository.emailExists(current.email.value)
+                if (emailExists) {
+                    _state.update {
+                        it.copy(
+                            email = it.email.copy(error = "Email já cadastrado"),
+                            isLoading = false
+                        )
+                    }
+                    return@launch
+                }
+
                 val usuario = UsuarioEntity(
                     name = current.nome.value,
                     email = current.email.value,

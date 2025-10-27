@@ -42,4 +42,7 @@ interface UsuarioDao {
         insertAll(usuarios)
     }
 
+    @Query("SELECT COUNT(*) > 0 FROM usuarios WHERE email = :email")
+    suspend fun emailExists(email: String): Boolean
+
 }
