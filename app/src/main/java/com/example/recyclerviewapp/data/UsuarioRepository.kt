@@ -7,7 +7,6 @@ import com.example.recyclerviewapp.data.local.toDomain
 import com.example.recyclerviewapp.domain.Usuario
 import com.example.recyclerviewapp.domain.UsuarioDetails
 import com.example.recyclerviewapp.data.network.ApiService
-import com.example.recyclerviewapp.data.network.toNormalized
 import com.example.recyclerviewapp.domain.UsuarioRepositoryInterface
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -37,7 +36,7 @@ class UsuarioRepository(
             val usuariosLocais = usuarioDao.findAllOnce()
 
             val usuariosRemotos = api.getUsuarios().map { usuarioResource ->
-                usuarioResource.toNormalized().toEntity(
+                usuarioResource.toEntity(
                     localId = usuariosLocais.firstOrNull { usuario ->
                         usuario.idApi == usuarioResource.id
                     }?.localId
@@ -53,7 +52,7 @@ class UsuarioRepository(
         try {
             val usuario = usuarioDao.find(id)
             usuario?.idApi?.let { idApi ->
-                val remote = api.getUsuarioPorId(idApi).toNormalized().toEntity(localId = id)
+                val remote = api.getUsuarioPorId(idApi).toEntity(localId = id)
                 usuarioDao.insert(remote)
             }
 
