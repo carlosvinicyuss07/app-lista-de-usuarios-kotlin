@@ -102,8 +102,14 @@ class FormUsuarioFragment : Fragment() {
         }
 
         setupListeners()
-        observeStatus()
         observeEffects()
+
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.state.collect { value ->
+                binding.progressBar.visibility = if (value.isLoading) View.VISIBLE else View.GONE
+            }
+        }
     }
 
     private fun setupListeners() {
@@ -137,6 +143,7 @@ class FormUsuarioFragment : Fragment() {
 
         binding.btnSalvar.setOnClickListener {
             viewModel.process(FormIntent.Submit)
+            observeStatus()
         }
     }
 
@@ -169,9 +176,6 @@ class FormUsuarioFragment : Fragment() {
                     } else {
                         binding.imgProfileForm.setImageResource(R.drawable.user_details_image)
                     }
-
-                    binding.btnSalvar.isEnabled = state.isSaveEnable
-
                 }
             }
         }
