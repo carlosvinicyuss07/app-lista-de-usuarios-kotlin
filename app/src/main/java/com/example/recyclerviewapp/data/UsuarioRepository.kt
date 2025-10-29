@@ -48,7 +48,7 @@ class UsuarioRepository(
         }
     }
 
-    override suspend fun refreshUsuariosById(id: Int) {
+    override suspend fun refreshUsuariosById(id: Int): Unit = withContext(Dispatchers.IO) {
         try {
             val usuario = usuarioDao.find(id)
             usuario?.idApi?.let { idApi ->

@@ -1,7 +1,5 @@
 package com.example.recyclerviewapp.viewmodel
 
-import android.net.Uri
-
 data class CadastroUsuarioState(
     val nome: FormField = FormField(),
     val email: FormField = FormField(),
