@@ -3,7 +3,7 @@ package com.example.recyclerviewapp.viewmodel
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.recyclerviewapp.data.local.entities.UsuarioEntity
+import com.example.recyclerviewapp.domain.UsuarioDto
 import com.example.recyclerviewapp.domain.UsuarioRepositoryInterface
 import com.example.recyclerviewapp.utils.validateCity
 import com.example.recyclerviewapp.utils.validateCompany
@@ -223,21 +223,17 @@ class FormCadastroViewModel(
                     return@launch
                 }
 
-                val usuario = UsuarioEntity(
+                val usuario = UsuarioDto(
                     name = current.nome.value,
                     email = current.email.value,
-                    username = "",
                     street = current.street.value,
                     suite = current.suite.value,
                     city = current.city.value,
                     zipcode = current.zipcode.value,
-                    lat = "",
-                    lng = "",
                     phone = current.phone.value,
                     website = current.website.value,
                     company = current.company.value,
-                    photoUri = current.photoUri.value.takeIf { it.isNotBlank() },
-                    origemLocal = true
+                    photoUri = current.photoUri.value.takeIf { it.isNotBlank() }
                 )
                 repository.insert(usuario)
                 _effect.emit(FormEffect.SuccessSaved)
