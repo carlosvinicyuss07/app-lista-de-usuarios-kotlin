@@ -11,6 +11,7 @@ interface UsuarioRepositoryInterface {
 
     suspend fun refreshUsuariosById(id: Int)
 
+    // não usar objetos da camada de dados
     suspend fun insert(usuario: UsuarioEntity)
 
     suspend fun emailExists(email: String): Boolean

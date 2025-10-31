@@ -11,7 +11,7 @@ data class CadastroUsuarioState(
     val website: FormField = FormField(),
     val company: FormField = FormField(),
     val photoUri: FormField = FormField(),
-    val isSaveEnable: Boolean = false,
+    val isSaveEnable: Boolean = true,
     val isLoading: Boolean = false
 )
 
