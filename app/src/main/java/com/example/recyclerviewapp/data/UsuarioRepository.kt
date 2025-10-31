@@ -1,13 +1,14 @@
 package com.example.recyclerviewapp.data
 
 import com.example.recyclerviewapp.data.local.dao.UsuarioDao
-import com.example.recyclerviewapp.data.local.entities.UsuarioEntity
 import com.example.recyclerviewapp.data.local.toDetailsDomain
 import com.example.recyclerviewapp.data.local.toDomain
 import com.example.recyclerviewapp.domain.Usuario
 import com.example.recyclerviewapp.domain.UsuarioDetails
 import com.example.recyclerviewapp.data.network.ApiService
+import com.example.recyclerviewapp.domain.UsuarioDto
 import com.example.recyclerviewapp.domain.UsuarioRepositoryInterface
+import com.example.recyclerviewapp.domain.toEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -61,8 +62,8 @@ class UsuarioRepository(
         }
     }
 
-    override suspend fun insert(usuario: UsuarioEntity) = withContext(Dispatchers.IO) {
-        usuarioDao.insert(usuario)
+    override suspend fun insert(usuario: UsuarioDto) = withContext(Dispatchers.IO) {
+        usuarioDao.insert(usuario.toEntity())
     }
 
     override suspend fun emailExists(email: String): Boolean {

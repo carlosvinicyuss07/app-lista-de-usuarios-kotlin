@@ -1,6 +1,5 @@
 package com.example.recyclerviewapp.domain
 
-import com.example.recyclerviewapp.data.local.entities.UsuarioEntity
 import kotlinx.coroutines.flow.Flow
 
 interface UsuarioRepositoryInterface {
@@ -11,8 +10,7 @@ interface UsuarioRepositoryInterface {
 
     suspend fun refreshUsuariosById(id: Int)
 
-    // não usar objetos da camada de dados
-    suspend fun insert(usuario: UsuarioEntity)
+    suspend fun insert(usuario: UsuarioDto)
 
     suspend fun emailExists(email: String): Boolean
 
