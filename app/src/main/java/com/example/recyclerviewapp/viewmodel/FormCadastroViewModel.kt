@@ -1,5 +1,6 @@
 package com.example.recyclerviewapp.viewmodel
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.recyclerviewapp.data.local.entities.UsuarioEntity
@@ -234,6 +235,12 @@ class FormCadastroViewModel(
                 _state.update { it.copy(isLoading = false) }
             }
         }
+    }
+
+    fun onPhotoSelected(uri: Uri) {
+        _state.update { it.copy(photoUri = it.photoUri.copy(
+            value = uri.toString()
+        )) }
     }
 
     private fun validateAllFields(state: CadastroUsuarioState): Boolean {

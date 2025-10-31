@@ -20,7 +20,6 @@ import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.core.widget.doOnTextChanged
@@ -29,16 +28,15 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import com.example.recyclerviewapp.data.local.entities.UsuarioEntity
 import com.example.recyclerviewapp.databinding.FragmentFormUsuarioBinding
 import com.example.recyclerviewapp.viewmodel.FormCadastroViewModel
 import com.example.recyclerviewapp.viewmodel.FormEffect
 import com.example.recyclerviewapp.viewmodel.FormIntent
-import com.example.recyclerviewapp.viewmodel.UsuarioViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.io.File
 import androidx.core.net.toUri
+import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import com.example.recyclerviewapp.R
 
 class FormUsuarioFragment : Fragment() {
@@ -50,16 +48,10 @@ class FormUsuarioFragment : Fragment() {
 
     private val viewModel: FormCadastroViewModel by viewModel()
 
-    private val cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
-        if (success) {
-            viewModel.process(FormIntent.PhotoUriChanged(value = imageUri.toString()))
-        }
-    }
-
     private val cameraPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { granted ->
-        if (granted) openCamera()
+        if (granted) openCameraFragment()
         else Toast.makeText(requireContext(), "Permissão de câmera negada", Toast.LENGTH_SHORT).show()
     }
 
@@ -101,9 +93,17 @@ class FormUsuarioFragment : Fragment() {
             showImageOptionsDialog()
         }
 
+        setFragmentResultListener("camera_result") {_, bundle ->
+            val photoUri = bundle.getString("photoUri")
+            photoUri?.let {
+                val uri = it.toUri()
+                binding.imgProfileForm.setImageURI(uri)
+                viewModel.onPhotoSelected(uri = uri)
+            }
+        }
+
         setupListeners()
         observeEffects()
-
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.state.collect { value ->
@@ -220,7 +220,7 @@ class FormUsuarioFragment : Fragment() {
 
     private fun checkCameraPermissionAndOpen() {
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-            openCamera()
+            openCameraFragment()
         } else {
             cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
         }
@@ -250,14 +250,12 @@ class FormUsuarioFragment : Fragment() {
             }
         }
 
-    private fun openCamera() {
-        val imageFile = File.createTempFile("profile_", ".jpg", requireContext().cacheDir)
-        imageUri = FileProvider.getUriForFile(
-            requireContext(),
-            "${requireContext().packageName}.fileprovider",
-            imageFile
-        )
-        cameraLauncher.launch(imageUri)
+    private fun openCameraFragment() {
+        findNavController().navigate(R.id.action_formUsuarioFragment_to_cameraFragment)
+
+        binding.btnAddPhoto.setOnClickListener {
+            cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+        }
     }
 
     fun EditText.setTextIfDifferent(value: String) {
