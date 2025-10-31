@@ -37,152 +37,105 @@ class FormCadastroViewModel(
     fun process(intent: FormIntent) {
         when (intent) {
             is FormIntent.NomeChanged -> {
-                val error = validateName(intent.value)
                 _state.update {
                     it.copy(
                         nome = it.nome.copy(
                             value = intent.value,
-                            error = error
-                        ),
-                        isSaveEnable = validateAllFields(it.copy(
-                            nome = it.nome.copy(value = intent.value, error = error)
-                        ))
+                            error = null
+                        )
                     )
                 }
             }
             is FormIntent.EmailChanged -> {
                 viewModelScope.launch {
                     val email = intent.value.trim()
-                    val formatError = validateEmail(email)
-
-                    val duplicateError = if (repository.emailExists(email)) {
-                        "Email já cadastrado"
-                    } else null
-
-                    val finalError = formatError ?: duplicateError
                     _state.update {
                         it.copy(
                             email = it.email.copy(
                                 value = email,
-                                error = finalError
-                            ),
-                            isSaveEnable = validateAllFields(it.copy(
-                                email = it.email.copy(value = email, error = finalError)
-                            ))
+                                error = null
+                            )
                         )
                     }
                 }
-
             }
             is FormIntent.StreetChanged -> {
-                val error = validateStreet(intent.value)
                 _state.update {
                     it.copy(
                         street = it.street.copy(
                             value = intent.value,
-                            error = error
-                        ),
-                        isSaveEnable = validateAllFields(it.copy(
-                            street = it.street.copy(value = intent.value, error = error)
-                        ))
+                            error = null
+                        )
                     )
                 }
             }
             is FormIntent.SuiteChanged -> {
-                val error = validateSuite(intent.value)
                 _state.update {
                     it.copy(
                         suite = it.suite.copy(
                             value = intent.value,
-                            error = error
-                        ),
-                        isSaveEnable = validateAllFields(it.copy(
-                            suite = it.suite.copy(value = intent.value, error = error)
-                        ))
+                            error = null
+                        )
                     )
                 }
             }
             is FormIntent.CityChanged -> {
-                val error = validateCity(intent.value)
                 _state.update {
                     it.copy(
                         city = it.city.copy(
                             value = intent.value,
-                            error = error
-                        ),
-                        isSaveEnable = validateAllFields(it.copy(
-                            city = it.city.copy(value = intent.value, error = error)
-                        ))
+                            error = null
+                        )
                     )
                 }
             }
             is FormIntent.ZipcodeChanged -> {
-                val error = validateZipcode(intent.value)
                 _state.update {
                     it.copy(
                         zipcode = it.zipcode.copy(
                             value = intent.value,
-                            error = error
-                        ),
-                        isSaveEnable = validateAllFields(it.copy(
-                            zipcode = it.zipcode.copy(value = intent.value, error = error)
-                        ))
+                            error = null
+                        )
                     )
                 }
             }
             is FormIntent.PhoneChanged -> {
-                val error = validatePhone(intent.value)
                 _state.update {
                     it.copy(
                         phone = it.phone.copy(
                             value = intent.value,
-                            error = error
-                        ),
-                        isSaveEnable = validateAllFields(it.copy(
-                            phone = it.phone.copy(value = intent.value, error = error)
-                        ))
+                            error = null
+                        )
                     )
                 }
             }
             is FormIntent.WebsiteChanged -> {
-                val error = validateWebsite(intent.value)
                 _state.update {
                     it.copy(
                         website = it.website.copy(
                             value = intent.value,
-                            error = error
-                        ),
-                        isSaveEnable = validateAllFields(it.copy(
-                            website = it.website.copy(value = intent.value, error = error)
-                        ))
+                            error = null
+                        )
                     )
                 }
             }
             is FormIntent.CompanyChanged -> {
-                val error = validateCompany(intent.value)
                 _state.update {
                     it.copy(
                         company = it.company.copy(
                             value = intent.value,
-                            error = error
-                        ),
-                        isSaveEnable = validateAllFields(it.copy(
-                            company = it.company.copy(value = intent.value, error = error)
-                        ))
+                            error = null
+                        )
                     )
                 }
             }
             is FormIntent.PhotoUriChanged -> {
-                val error = validatePhotoUri(intent.value)
                 _state.update {
                     it.copy(
                         photoUri = it.photoUri.copy(
                             value = intent.value,
-                            error = error
-                        ),
-                        isSaveEnable = validateAllFields(it.copy(
-                            photoUri = it.photoUri.copy(value = intent.value, error = error)
-                        ))
+                            error = null
+                        )
                     )
                 }
             }
@@ -190,13 +143,72 @@ class FormCadastroViewModel(
         }
     }
 
+    private fun validateForm() {
+        val currentState = _state.value
+        _state.update {
+            it.copy(
+                nome = it.nome.copy(
+                    error = validateName(currentState.nome.value)
+                ),
+                email = it.email.copy(
+                    error = validateEmail(currentState.email.value)
+                ),
+                phone = it.phone.copy(
+                    error = validatePhone(currentState.phone.value)
+                ),
+                street = it.street.copy(
+                    error = validateStreet(currentState.street.value)
+                ),
+                suite = it.suite.copy(
+                    error = validateSuite(currentState.suite.value)
+                ),
+                city = it.city.copy(
+                    error = validateCity(currentState.city.value)
+                ),
+                zipcode = it.zipcode.copy(
+                    error = validateZipcode(currentState.zipcode.value)
+                ),
+                website = it.website.copy(
+                    error = validateWebsite(currentState.website.value)
+                ),
+                company = it.company.copy(
+                    error = validateCompany(currentState.company.value)
+                ),
+                photoUri = it.photoUri.copy(
+                    error = validatePhotoUri(currentState.photoUri.value)
+                )
+            )
+        }
+    }
+
+    private fun formIsValid(): Boolean {
+        val currentState = _state.value
+        val fields = listOf(
+            currentState.nome,
+            currentState.email,
+            currentState.phone,
+            currentState.street,
+            currentState.suite,
+            currentState.city,
+            currentState.zipcode,
+            currentState.website,
+            currentState.company,
+            currentState.photoUri
+        )
+
+        return fields.all {
+            it.error == null
+        }
+    }
+
     fun adicionarUsuarioLocal() {
-        val current = _state.value
-        if (!current.isSaveEnable) {
+        validateForm()
+        if (!formIsValid()) {
             viewModelScope.launch { _effect.emit(FormEffect.ShowMessage("Corrija os erros antes de salvar")) }
             return
         }
 
+        val current = _state.value
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true) }
             try {
@@ -243,24 +255,4 @@ class FormCadastroViewModel(
         )) }
     }
 
-    private fun validateAllFields(state: CadastroUsuarioState): Boolean {
-        return state.nome.error == null &&
-                state.email.error == null &&
-                state.street.error == null &&
-                state.suite.error == null &&
-                state.city.error == null &&
-                state.zipcode.error == null &&
-                state.phone.error == null &&
-                state.website.error == null &&
-                state.company.error == null &&
-                state.nome.value.isNotBlank() &&
-                state.email.value.isNotBlank() &&
-                state.street.value.isNotBlank() &&
-                state.suite.value.isNotBlank() &&
-                state.city.value.isNotBlank() &&
-                state.zipcode.value.isNotBlank() &&
-                state.phone.value.isNotBlank() &&
-                state.website.value.isNotBlank() &&
-                state.company.value.isNotBlank()
-    }
 }

@@ -5,7 +5,6 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -35,7 +34,7 @@ import com.example.recyclerviewapp.viewmodel.FormIntent
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.core.net.toUri
-import androidx.fragment.app.setFragmentResult
+import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResultListener
 import com.example.recyclerviewapp.R
 
@@ -43,9 +42,6 @@ class FormUsuarioFragment : Fragment() {
 
     private var _binding: FragmentFormUsuarioBinding? = null
     private val binding get() = _binding!!
-
-    private var imageUri: Uri? = null
-
     private val viewModel: FormCadastroViewModel by viewModel()
 
     private val cameraPermissionLauncher = registerForActivityResult(
@@ -104,12 +100,7 @@ class FormUsuarioFragment : Fragment() {
 
         setupListeners()
         observeEffects()
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.state.collect { value ->
-                binding.progressBar.visibility = if (value.isLoading) View.VISIBLE else View.GONE
-            }
-        }
+        observeStatus()
     }
 
     private fun setupListeners() {
@@ -143,7 +134,6 @@ class FormUsuarioFragment : Fragment() {
 
         binding.btnSalvar.setOnClickListener {
             viewModel.process(FormIntent.Submit)
-            observeStatus()
         }
     }
 
@@ -151,6 +141,7 @@ class FormUsuarioFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.state.collect { state ->
+                    binding.progressBar.isVisible = state.isLoading
                     binding.edtNome.setTextIfDifferent(state.nome.value)
                     binding.edtNome.error = state.nome.error
                     binding.edtEmail.setTextIfDifferent(state.email.value)
@@ -245,7 +236,6 @@ class FormUsuarioFragment : Fragment() {
                 val uri = result.data?.data
                 if (uri != null) {
                     binding.imgProfileForm.setImageURI(uri)
-                    imageUri = uri
                 }
             }
         }
