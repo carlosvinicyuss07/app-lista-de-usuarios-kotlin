@@ -23,6 +23,16 @@
         android:name="com.example.recyclerviewapp.ui.fragments.FormUsuarioFragment"
         android:label="Cadastrar Usuário"
         tools:layout="@layout/fragment_form_usuario">
+        <action
+            android:id="@+id/action_formUsuarioFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/cameraFragment"
+        android:name="com.example.recyclerviewapp.ui.fragments.CameraFragment"
+        android:label="Câmera"
+        tools:layout="@layout/fragment_camera">
     </fragment>
 
     <fragment

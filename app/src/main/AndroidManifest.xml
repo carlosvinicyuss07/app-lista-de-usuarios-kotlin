@@ -5,6 +5,12 @@
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+
     <application
         android:name=".MainApp"
         android:allowBackup="true"
@@ -35,8 +41,5 @@
                 android:resource="@xml/file_paths" />
         </provider>
     </application>
-
-    <uses-permission android:name="android.permission.CAMERA"
-        tools:ignore="ManifestOrder" />
 
 </manifest>
