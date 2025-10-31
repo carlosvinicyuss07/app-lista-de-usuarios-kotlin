@@ -44,13 +44,6 @@ class FormUsuarioFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: FormCadastroViewModel by viewModel()
 
-    private val cameraPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { granted ->
-        if (granted) openCameraFragment()
-        else Toast.makeText(requireContext(), "Permissão de câmera negada", Toast.LENGTH_SHORT).show()
-    }
-
     private val photoPickerLauncher = registerForActivityResult(
         ActivityResultContracts.PickVisualMedia()
     ) { uri ->
@@ -202,19 +195,11 @@ class FormUsuarioFragment : Fragment() {
             .setTitle("Selecionar foto de perfil")
             .setItems(options) { _, which ->
                 when (which) {
-                    0 -> checkCameraPermissionAndOpen()
+                    0 -> openCameraFragment()
                     1 -> checkStoragePermissionAndOpen()
                 }
             }
             .show()
-    }
-
-    private fun checkCameraPermissionAndOpen() {
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-            openCameraFragment()
-        } else {
-            cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
-        }
     }
 
     private fun checkStoragePermissionAndOpen() {
@@ -242,10 +227,6 @@ class FormUsuarioFragment : Fragment() {
 
     private fun openCameraFragment() {
         findNavController().navigate(R.id.action_formUsuarioFragment_to_cameraFragment)
-
-        binding.btnAddPhoto.setOnClickListener {
-            cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
-        }
     }
 
     fun EditText.setTextIfDifferent(value: String) {

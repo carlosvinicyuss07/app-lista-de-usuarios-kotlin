@@ -1,6 +1,7 @@
 package com.example.recyclerviewapp.ui.fragments
 
 import android.Manifest
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -62,11 +63,18 @@ class CameraFragment : Fragment() {
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
-        // Solicita permissão
-        permissionLauncher.launch(Manifest.permission.CAMERA)
+        checkCameraPermissionAndStart()
 
         binding.btnTakePhoto.setOnClickListener {
             takePhoto()
+        }
+    }
+
+    private fun checkCameraPermissionAndStart() {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            startCamera()
+        } else {
+            permissionLauncher.launch(Manifest.permission.CAMERA)
         }
     }
 
